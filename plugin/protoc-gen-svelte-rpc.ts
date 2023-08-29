@@ -33,13 +33,18 @@ function generateTs(schema: Schema) {
   // for each file
   for (let i = 0; i < schema.files.length; i++) {
     let file = schema.files[i]
-    for (let j = 0; j < file.services.length; j++) {
+    // i believe it has difficulty with services.
+    /*for (let j = 0; j < file.services.length; j++) {
       let service = file.services[j]
       //genClientFile(schema, service) // gens client for service.
       for (let k = 0; k < service.methods.length; k++) {
         let method = service.methods[k]
         generateView(schema, method.input)
       }
+    }*/
+
+    for (let j = 0; j < file.messages.length; j++) {
+      generateView(schema, file.messages[j])
     }
   }
 }

@@ -1,17 +1,18 @@
 syntax = "proto3";
-package Example; 
-
-//import "google/protobuf/empty.proto";
+package tutorial; 
 
 service ExampleService {
+    rpc CreateExample(Example) returns (Example);
     rpc GetExample(GetExampleRequest) returns (Example);
 }
 
 message Example {
     string name = 1;
+    string display_name = 2;
+    bool active = 3;
+    int32 count = 4;
 }
 
 message GetExampleRequest {
     string name = 1;
 }
-

@@ -1,0 +1,13 @@
+# This template is to generate connect-web artifacts for the Eliza demo.
+version: v1
+plugins:
+  - plugin: buf.build/bufbuild/es
+    out: my-app/src/lib/gen
+  - plugin: buf.build/bufbuild/connect-web
+    out:  my-app/src/lib/gen
+  - name: svelte-rpc
+    path: ./plugin/protoc-gen-svelte-rpc.ts
+    opt: 
+      - target=ts
+    out: my-app/src
+

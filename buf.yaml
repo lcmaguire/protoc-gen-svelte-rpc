@@ -1,0 +1,15 @@
+version: v1
+build:
+  excludes: # https://docs.buf.build/build/usage#excludes
+    - vendor
+    - node_modules
+    - my-app/node_modules/
+breaking:
+  use:
+    - FILE
+lint:
+  ignore: 
+    - vendor
+    - node_modules
+  use:
+    - DEFAULT

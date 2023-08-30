@@ -61,14 +61,12 @@ function generateTs(schema: Schema) {
 }
 
 function generateView(schema: Schema, message: DescMessage) {
-  let nf = schema.generateFile(`lib/${message.typeName.replace(".", "/")}.svelte`)
+  let nf = schema.generateFile(`lib/${message.typeName.replace(".", "/")}View.svelte`)
 
   nf.print("<script> // @ts-nocheck")
   nf.print(`export let ${message.name};`) // todo have this be type asserted.
 
   nf.print("</script>")
-  nf.print(message.name)
-  nf.print(message.typeName) // write to this dir split.
   for (let i = 0; i < message.fields.length; i++) {
     let currentField = message.fields[i]
     let fieldName = `${message.name}.${currentField.name}` // todo convert to snakeCase
@@ -89,6 +87,10 @@ function editView(schema: Schema, message: DescMessage) {
     nf.print(`<input class="${fieldName}" bind:value={${fieldName}} >`)
   }
 }
+/*
+  import { ExampleServiceClient } from "$lib/client/ExampleService";
+  import {GetExampleRequest, Example } from "$lib/gen/example_pb"
+*/
 
 function generateRoute(schema: Schema, method: DescMethod) {
   let nf = schema.generateFile(`routes/${method.name}/+page.svelte`)
@@ -98,20 +100,26 @@ function generateRoute(schema: Schema, method: DescMethod) {
   let editComponent = `${method.input.name}Edit`
   nf.print(`import ${editComponent} from '$lib/${method.input.typeName.replace(".", "/")}Edit.svelte'`)
 
-  nf.print(`import ${method.output.name} from '$lib/${method.output.typeName.replace(".", "/")}.svelte'`)
+  let viewComponent = `${method.input.name}View`
+  nf.print(`import ${viewComponent} from '$lib/${method.output.typeName.replace(".", "/")}View.svelte'`)
+
+  nf.print(`import {${method.input.name}} from "$lib/gen/${method.input.file.name}_pb"`)
+  if (method.output.file.name !== method.input.file.name) {
+    nf.print(`import {${method.output.name}} from "$lib/gen/${method.output.file.name}_pb"`)
+  }
 
   let serviceName = method.parent.name
   let methodName = method.name
 
   nf.print(`import {${serviceName}Client} from '$lib/client/${serviceName}'`)
 
-  nf.print("let request = {}") // todo have this be type asserted.
-  nf.print("let response = {}") // todo have this be type asserted.
+  nf.print(`let request = new ${method.input.name}()`) // todo have this be type asserted.
+  nf.print(`let response = new ${method.output.name}()`) // todo have this be type asserted.
 
   // todo ${methodName} format in snakeCase.
   nf.print(`
   async function makeRequest() {
-    response = await ${serviceName}Client.${methodName}(request)
+    response = await ${serviceName}Client.${formatMethodName(methodName)}(request)
 }
   `)
 
@@ -125,7 +133,7 @@ function generateRoute(schema: Schema, method: DescMethod) {
 
   // import response
   nf.print("Response")
-  nf.print(`<${method.output.name} ${method.output.name}={response}/>`)
+  nf.print(`<${viewComponent} ${method.output.name}={response}/>`)
 }
 
 function client(schema: Schema, serviceName: string, fileName: string) {
@@ -144,4 +152,48 @@ export const ${serviceName}Client = createPromiseClient(${serviceName}, transpor
   let nf = schema.generateFile(`lib/client/${serviceName}.ts`)
   nf.print(client)
 
+}
+
+function protoPathToCssPath(input: string) {
+  return input.replace(".", "-")
+}
+
+function protoCamelCase(snakeCase: string): string {
+  let capNext = false;
+  let a = ""
+  for (let i = 0; i < snakeCase.length; i++) {
+    let c = snakeCase.charAt(i);
+    switch (c) {
+      case "_":
+        capNext = true;
+        break;
+      case "0":
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9":
+        a = a + c
+        capNext = false;
+        break;
+      default:
+        if (capNext) {
+          capNext = false;
+          c = c.toUpperCase();
+        }
+        a = a + c
+        break;
+    }
+  }
+  return a;
+}
+
+function formatMethodName(input: string) {
+  let firstChar = input.charAt(0).toLocaleLowerCase()
+  let out = firstChar + input.substring(1)
+  return out
 }

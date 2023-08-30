@@ -10,5 +10,9 @@
   "scripts": {
     "build": "./node_modules/typescript/bin/tsc --noEmit",
     "buf:generate": "buf generate proto"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.26.1",
+    "@bufbuild/protoc-gen-es": "^1.3.0"
   }
 }

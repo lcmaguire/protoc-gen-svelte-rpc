@@ -1,4 +1,4 @@
 <script> // @ts-nocheck
-export let Extra;
+export let message;
 </script>
-<input class="Extra.more" bind:value={Extra.more} >
+<input class="message.more" bind:value={message.more} >

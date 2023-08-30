@@ -1,4 +1,4 @@
 <script> // @ts-nocheck
-export let GetExampleRequest;
+export let message;
 </script>
-<input class="GetExampleRequest.name" bind:value={GetExampleRequest.name} >
+<input class="message.name" bind:value={message.name} >

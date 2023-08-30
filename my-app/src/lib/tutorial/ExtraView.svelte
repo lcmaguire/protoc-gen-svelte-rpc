@@ -1,8 +1,9 @@
 <script> // @ts-nocheck
-export let Extra;
-if (Extra == null ) {
-    Extra = {}
+import {Extra} from "$lib/gen/example_pb"
+export let message;
+if (message == null ) {
+    message = new Extra ()
 }
 </script>
-<p class="Extra-more"> Extra.more : {Extra.more} </p>
+<p class="message-more"> message.more : {message.more} </p>
 

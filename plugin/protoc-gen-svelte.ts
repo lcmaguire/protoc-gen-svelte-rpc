@@ -76,9 +76,14 @@ function generateView(schema: Schema, message: DescMessage) {
   }
 
   nf.print("<script> // @ts-nocheck")
-  nf.print(`export let ${message.name};`) // todo have this be type asserted
-  nf.print(`if (${message.name} == null ) {
-    ${message.name} = {}
+  let messageImport = getMessageImportPath(message)
+  nf.print(messageImport)
+  //nf.print(`export let ${message.name}`)
+
+  let varName = "message"
+  nf.print(`export let ${varName};`) // todo have this be type asserted
+  nf.print(`if (${varName} == null ) {
+    ${varName} = new ${message.name} ()
 }`)
   for (let i in imports) {
     nf.print(imports[i])
@@ -87,7 +92,7 @@ function generateView(schema: Schema, message: DescMessage) {
   nf.print("</script>")
   for (let i = 0; i < message.fields.length; i++) {
     let currentField = message.fields[i]
-    let fieldName = `${message.name}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
+    let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
 
     switch (currentField.fieldKind) {
       case "scalar":
@@ -124,7 +129,7 @@ function getEnumView(currentField: DescField, currentName: string) {
 }
 
 function getMessageView(message: DescMessage, currentName: string) {
-  return `<${message.name}View ${message.name}={${currentName}} />\n`
+  return `<${message.name}View message={${currentName}} />\n`
 }
 /*
   get - scalar types
@@ -141,12 +146,13 @@ function editView(schema: Schema, message: DescMessage) {
   let nf = schema.generateFile(`lib/${message.typeName.replace(".", "/")}Edit.svelte`)
 
   nf.print("<script> // @ts-nocheck")
-  nf.print(`export let ${message.name};`) // todo have this be type asserted.
+  let varName = "message"
+  nf.print(`export let ${varName};`) // todo have this be type asserted.
 
   nf.print("</script>")
   for (let i = 0; i < message.fields.length; i++) {
     let currentField = message.fields[i]
-    let fieldName = `${message.name}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
+    let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
     nf.print(`<input class="${fieldName}" bind:value={${fieldName}} >`)
   }
 }
@@ -186,13 +192,13 @@ function generateRoute(schema: Schema, method: DescMethod) {
 
   // import request
   nf.print("Request")
-  nf.print(`<${editComponent} ${method.input.name}={request}/> <br> <br>`)
+  nf.print(`<${editComponent} message={request}/> <br> <br>`)
 
   nf.print(`<button on:click={makeRequest}> Send Request</button> <br> <br>`)
 
   // import response
   nf.print("Response <br> <br>")
-  nf.print(`<${viewComponent} ${method.output.name}={response}/>`)
+  nf.print(`<${viewComponent} message={response}/>`)
 }
 
 function client(schema: Schema, serviceName: string, fileName: string) {
@@ -255,4 +261,8 @@ function formatMethodName(input: string) {
   let firstChar = input.charAt(0).toLocaleLowerCase()
   let out = firstChar + input.substring(1)
   return out
+}
+
+function getMessageImportPath(message: DescMessage) {
+  return `import {${message.name}} from "$lib/gen/${message.file.name}_pb"`
 }

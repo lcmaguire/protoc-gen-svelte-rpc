@@ -1,8 +1,9 @@
 <script> // @ts-nocheck
-export let GetExampleRequest;
-if (GetExampleRequest == null ) {
-    GetExampleRequest = {}
+import {GetExampleRequest} from "$lib/gen/example_pb"
+export let message;
+if (message == null ) {
+    message = new GetExampleRequest ()
 }
 </script>
-<p class="GetExampleRequest-name"> GetExampleRequest.name : {GetExampleRequest.name} </p>
+<p class="message-name"> message.name : {message.name} </p>
 

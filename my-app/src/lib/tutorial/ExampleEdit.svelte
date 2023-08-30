@@ -1,8 +1,8 @@
 <script> // @ts-nocheck
-export let Example;
+export let message;
 </script>
-<input class="Example.name" bind:value={Example.name} >
-<input class="Example.displayName" bind:value={Example.displayName} >
-<input class="Example.active" bind:value={Example.active} >
-<input class="Example.count" bind:value={Example.count} >
-<input class="Example.extra" bind:value={Example.extra} >
+<input class="message.name" bind:value={message.name} >
+<input class="message.displayName" bind:value={message.displayName} >
+<input class="message.active" bind:value={message.active} >
+<input class="message.count" bind:value={message.count} >
+<input class="message.extra" bind:value={message.extra} >

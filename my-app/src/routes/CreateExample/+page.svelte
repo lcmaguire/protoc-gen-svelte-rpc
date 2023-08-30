@@ -12,7 +12,7 @@ let response = new Example()
   
 </script>
 Request
-<ExampleEdit Example={request}/> <br> <br>
+<ExampleEdit message={request}/> <br> <br>
 <button on:click={makeRequest}> Send Request</button> <br> <br>
 Response <br> <br>
-<ExampleView Example={response}/>
+<ExampleView message={response}/>

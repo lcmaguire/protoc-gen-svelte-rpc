@@ -70,25 +70,42 @@ function generateView(schema: Schema, message: DescMessage) {
   for (let i = 0; i < message.fields.length; i++) {
     let currentField = message.fields[i]
     let fieldName = `${message.name}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
-    nf.print(`${getScalarView(currentField, fieldName)}`)
+
+    switch (currentField.fieldKind) {
+      case "scalar":
+        nf.print(`${getScalarView(currentField, fieldName)}`)
+        break
+      case "enum":
+        nf.print(`${getEnumView(currentField, fieldName)}`)
+        break;
+      case "message":
+        nf.print(`${getMessageView(currentField.message, fieldName)}`)
+        break;
+    }
   }
 }
 
 function getScalarView(currentField: DescField, currentName: string) {
   switch (currentField.scalar) {
-      case ScalarType.STRING:
-          return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}} </p>\n`
-      case ScalarType.BOOL:
-          return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}}  </p>\n`
-      case ScalarType.INT32: case ScalarType.INT64: case ScalarType.UINT32: case ScalarType.UINT64: ScalarType.FIXED32;
-      case ScalarType.FIXED64: case ScalarType.SFIXED32: case ScalarType.SFIXED64: case ScalarType.DOUBLE: case ScalarType.FLOAT:
-          return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}} </p>\n`
-      default:
-          return ""
+    case ScalarType.STRING:
+      return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}} </p>\n`
+    case ScalarType.BOOL:
+      return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}}  </p>\n`
+    case ScalarType.INT32: case ScalarType.INT64: case ScalarType.UINT32: case ScalarType.UINT64: ScalarType.FIXED32;
+    case ScalarType.FIXED64: case ScalarType.SFIXED32: case ScalarType.SFIXED64: case ScalarType.DOUBLE: case ScalarType.FLOAT:
+      return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}} </p>\n`
+    default:
+      return ""
   }
 }
 
+function getEnumView(currentField: DescField, currentName: string) {
+  return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}} </p>\n`
+}
 
+function getMessageView(message: DescMessage, currentName: string) {
+  return `<View${message.name} ${message.name}={${currentName}} />\n`
+}
 /*
   get - scalar types
   get - enums
@@ -113,6 +130,8 @@ function editView(schema: Schema, message: DescMessage) {
     nf.print(`<input class="${fieldName}" bind:value={${fieldName}} >`)
   }
 }
+
+
 
 function generateRoute(schema: Schema, method: DescMethod) {
   let nf = schema.generateFile(`routes/${method.name}/+page.svelte`)

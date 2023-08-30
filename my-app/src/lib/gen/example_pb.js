@@ -15,6 +15,17 @@ export const Example = proto3.makeMessageType(
     { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "active", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 4, name: "count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 5, name: "extra", kind: "message", T: Extra },
+  ],
+);
+
+/**
+ * @generated from message tutorial.Extra
+ */
+export const Extra = proto3.makeMessageType(
+  "tutorial.Extra",
+  () => [
+    { no: 1, name: "more", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

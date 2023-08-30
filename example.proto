@@ -11,6 +11,11 @@ message Example {
     string display_name = 2;
     bool active = 3;
     int32 count = 4;
+    Extra extra = 5;
+}
+
+message Extra {
+    string more = 1;
 }
 
 message GetExampleRequest {

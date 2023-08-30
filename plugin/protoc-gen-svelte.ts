@@ -63,8 +63,26 @@ function generateTs(schema: Schema) {
 function generateView(schema: Schema, message: DescMessage) {
   let nf = schema.generateFile(`lib/${message.typeName.replace(".", "/")}View.svelte`)
 
+
+  let imports = []
+
+  // gather imports
+  for (let i = 0; i < message.fields.length; i++) {
+    let curr = message.fields[i]
+    if (curr.message != undefined) {
+      let a = `import ${curr.message.name}View from '$lib/${curr.message.typeName.replace(".", "/")}View.svelte'`
+      imports.push(a)
+    }
+  }
+
   nf.print("<script> // @ts-nocheck")
-  nf.print(`export let ${message.name};`) // todo have this be type asserted.
+  nf.print(`export let ${message.name};`) // todo have this be type asserted
+  nf.print(`if (${message.name} == null ) {
+    ${message.name} = {}
+}`)
+  for (let i in imports) {
+    nf.print(imports[i])
+  }
 
   nf.print("</script>")
   for (let i = 0; i < message.fields.length; i++) {
@@ -79,6 +97,8 @@ function generateView(schema: Schema, message: DescMessage) {
         nf.print(`${getEnumView(currentField, fieldName)}`)
         break;
       case "message":
+        let i = nf.import(currentField.message)
+        nf.print(`<!-- ${i.from} ${i.id} ${i.name} -->`)
         nf.print(`${getMessageView(currentField.message, fieldName)}`)
         break;
     }
@@ -104,7 +124,7 @@ function getEnumView(currentField: DescField, currentName: string) {
 }
 
 function getMessageView(message: DescMessage, currentName: string) {
-  return `<View${message.name} ${message.name}={${currentName}} />\n`
+  return `<${message.name}View ${message.name}={${currentName}} />\n`
 }
 /*
   get - scalar types
@@ -130,8 +150,6 @@ function editView(schema: Schema, message: DescMessage) {
     nf.print(`<input class="${fieldName}" bind:value={${fieldName}} >`)
   }
 }
-
-
 
 function generateRoute(schema: Schema, method: DescMethod) {
   let nf = schema.generateFile(`routes/${method.name}/+page.svelte`)

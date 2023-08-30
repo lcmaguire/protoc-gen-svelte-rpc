@@ -5,3 +5,4 @@ export let Example;
 <input class="Example.displayName" bind:value={Example.displayName} >
 <input class="Example.active" bind:value={Example.active} >
 <input class="Example.count" bind:value={Example.count} >
+<input class="Example.extra" bind:value={Example.extra} >

@@ -30,6 +30,11 @@ export declare class Example extends Message<Example> {
    */
   count: number;
 
+  /**
+   * @generated from field: tutorial.Extra extra = 5;
+   */
+  extra?: Extra;
+
   constructor(data?: PartialMessage<Example>);
 
   static readonly runtime: typeof proto3;
@@ -43,6 +48,30 @@ export declare class Example extends Message<Example> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Example;
 
   static equals(a: Example | PlainMessage<Example> | undefined, b: Example | PlainMessage<Example> | undefined): boolean;
+}
+
+/**
+ * @generated from message tutorial.Extra
+ */
+export declare class Extra extends Message<Extra> {
+  /**
+   * @generated from field: string more = 1;
+   */
+  more: string;
+
+  constructor(data?: PartialMessage<Extra>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tutorial.Extra";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Extra;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Extra;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Extra;
+
+  static equals(a: Extra | PlainMessage<Extra> | undefined, b: Extra | PlainMessage<Extra> | undefined): boolean;
 }
 
 /**

@@ -3,4 +3,5 @@ export let GetExampleRequest;
 </script>
 GetExampleRequest
 tutorial.GetExampleRequest
-<div class="GetExampleRequest.name"> {GetExampleRequest.name} </div>
+name
+<input class="GetExampleRequest.name" bind:value={GetExampleRequest.name} >

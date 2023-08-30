@@ -36,6 +36,7 @@ function generateTs(schema: Schema) {
     // i believe it has difficulty with services.
     for (let m = 0; m < file.messages.length; m++) {
       generateView(schema, file.messages[m])
+      editView(schema, file.messages[m])
     }
 
     for (let j = 0; j < file.services.length; j++) {
@@ -61,33 +62,53 @@ function generateTs(schema: Schema) {
 
 function generateView(schema: Schema, message: DescMessage) {
   let nf = schema.generateFile(`lib/${message.typeName.replace(".", "/")}.svelte`)
+
+  nf.print("<script> // @ts-nocheck")
+  nf.print(`export let ${message.name};`) // todo have this be type asserted.
+
+  nf.print("</script>")
   nf.print(message.name)
   nf.print(message.typeName) // write to this dir split.
   for (let i = 0; i < message.fields.length; i++) {
     let currentField = message.fields[i]
-    nf.print(currentField.name)
+    let fieldName = `${message.name}.${currentField.name}` // todo convert to snakeCase
+    nf.print(`<div class="${fieldName}"> {${fieldName}} </div>`)
+  }
+}
+
+function editView(schema: Schema, message: DescMessage) {
+  let nf = schema.generateFile(`lib/${message.typeName.replace(".", "/")}Edit.svelte`)
+
+  nf.print("<script> // @ts-nocheck")
+  nf.print(`export let ${message.name};`) // todo have this be type asserted.
+
+  nf.print("</script>")
+  for (let i = 0; i < message.fields.length; i++) {
+    let currentField = message.fields[i]
+    let fieldName = `${message.name}.${currentField.name}` // todo convert to snakeCase
+    nf.print(`<input class="${fieldName}" bind:value={${fieldName}} >`)
   }
 }
 
 function generateRoute(schema: Schema, method: DescMethod) {
   let nf = schema.generateFile(`routes/${method.name}/+page.svelte`)
 
-  nf.print("<script>")
+  nf.print("<script> // @ts-nocheck")
 
-  nf.print(`import ${method.input.name} from '$lib/${method.input.typeName.replace(".", "/")}.svelte'`)
+  let editComponent = `${method.input.name}Edit`
+  nf.print(`import ${editComponent} from '$lib/${method.input.typeName.replace(".", "/")}Edit.svelte'`)
 
-  if (method.input.typeName !== method.output.typeName) {
-    nf.print(`import ${method.output.name} from '$lib/${method.output.typeName.replace(".", "/")}.svelte'`)
-  }
+  nf.print(`import ${method.output.name} from '$lib/${method.output.typeName.replace(".", "/")}.svelte'`)
 
   let serviceName = method.parent.name
   let methodName = method.name
 
-  nf.print(`import ${serviceName}Client from '$lib/client/${serviceName}'`)
+  nf.print(`import {${serviceName}Client} from '$lib/client/${serviceName}'`)
 
-  nf.print("let request = {}")
-  nf.print("let response = {}")
+  nf.print("let request = {}") // todo have this be type asserted.
+  nf.print("let response = {}") // todo have this be type asserted.
 
+  // todo ${methodName} format in snakeCase.
   nf.print(`
   async function makeRequest() {
     response = await ${serviceName}Client.${methodName}(request)
@@ -98,25 +119,14 @@ function generateRoute(schema: Schema, method: DescMethod) {
 
   // import request
   nf.print("Request")
-  nf.print(`<${method.input.name} />`)
+  nf.print(`<${editComponent} ${method.input.name}={request}/>`)
 
   nf.print(`<button on:click={makeRequest}> Send Request</button>`)
 
   // import response
   nf.print("Response")
-  nf.print(`<${method.output.name} />`)
+  nf.print(`<${method.output.name} ${method.output.name}={response}/>`)
 }
-
-/*
-
-let baseURL = ""
-const transport = createConnectTransport({
-  baseUrl: baseURL,
-})
-const client = createPromiseClient(ExampleService, transport)
-  
-export {client}
-*/
 
 function client(schema: Schema, serviceName: string, fileName: string) {
   let client = `  

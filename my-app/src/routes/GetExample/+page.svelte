@@ -1,7 +1,8 @@
 <script> // @ts-nocheck
 import GetExampleRequestEdit from '$lib/tutorial/GetExampleRequestEdit.svelte'
-import GetExampleRequestView from '$lib/tutorial/ExampleView.svelte'
+import ExampleView from '$lib/tutorial/ExampleView.svelte'
 import {GetExampleRequest} from "$lib/gen/example_pb"
+import {Example} from "$lib/gen/example_pb"
 import {ExampleServiceClient} from '$lib/client/ExampleService'
 let request = new GetExampleRequest()
 let response = new Example()
@@ -12,7 +13,7 @@ let response = new Example()
   
 </script>
 Request
-<GetExampleRequestEdit GetExampleRequest={request}/>
-<button on:click={makeRequest}> Send Request</button>
-Response
-<GetExampleRequestView Example={response}/>
+<GetExampleRequestEdit GetExampleRequest={request}/> <br> <br>
+<button on:click={makeRequest}> Send Request</button> <br> <br>
+Response <br> <br>
+<ExampleView Example={response}/>

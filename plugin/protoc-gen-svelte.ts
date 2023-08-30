@@ -69,10 +69,36 @@ function generateView(schema: Schema, message: DescMessage) {
   nf.print("</script>")
   for (let i = 0; i < message.fields.length; i++) {
     let currentField = message.fields[i]
-    let fieldName = `${message.name}.${currentField.name}` // todo convert to snakeCase
-    nf.print(`<div class="${fieldName}"> {${fieldName}} </div>`)
+    let fieldName = `${message.name}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
+    nf.print(`${getScalarView(currentField, fieldName)}`)
   }
 }
+
+function getScalarView(currentField: DescField, currentName: string) {
+  switch (currentField.scalar) {
+      case ScalarType.STRING:
+          return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}} </p>\n`
+      case ScalarType.BOOL:
+          return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}}  </p>\n`
+      case ScalarType.INT32: case ScalarType.INT64: case ScalarType.UINT32: case ScalarType.UINT64: ScalarType.FIXED32;
+      case ScalarType.FIXED64: case ScalarType.SFIXED32: case ScalarType.SFIXED64: case ScalarType.DOUBLE: case ScalarType.FLOAT:
+          return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}} </p>\n`
+      default:
+          return ""
+  }
+}
+
+
+/*
+  get - scalar types
+  get - enums
+  get - messages
+  get - nested messages
+  get - nested enum
+  get - oneof
+  get - repeated
+
+*/
 
 function editView(schema: Schema, message: DescMessage) {
   let nf = schema.generateFile(`lib/${message.typeName.replace(".", "/")}Edit.svelte`)
@@ -83,14 +109,10 @@ function editView(schema: Schema, message: DescMessage) {
   nf.print("</script>")
   for (let i = 0; i < message.fields.length; i++) {
     let currentField = message.fields[i]
-    let fieldName = `${message.name}.${currentField.name}` // todo convert to snakeCase
+    let fieldName = `${message.name}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
     nf.print(`<input class="${fieldName}" bind:value={${fieldName}} >`)
   }
 }
-/*
-  import { ExampleServiceClient } from "$lib/client/ExampleService";
-  import {GetExampleRequest, Example } from "$lib/gen/example_pb"
-*/
 
 function generateRoute(schema: Schema, method: DescMethod) {
   let nf = schema.generateFile(`routes/${method.name}/+page.svelte`)
@@ -100,11 +122,11 @@ function generateRoute(schema: Schema, method: DescMethod) {
   let editComponent = `${method.input.name}Edit`
   nf.print(`import ${editComponent} from '$lib/${method.input.typeName.replace(".", "/")}Edit.svelte'`)
 
-  let viewComponent = `${method.input.name}View`
+  let viewComponent = `${method.output.name}View`
   nf.print(`import ${viewComponent} from '$lib/${method.output.typeName.replace(".", "/")}View.svelte'`)
 
   nf.print(`import {${method.input.name}} from "$lib/gen/${method.input.file.name}_pb"`)
-  if (method.output.file.name !== method.input.file.name) {
+  if (method.output.name !== method.input.name) {
     nf.print(`import {${method.output.name}} from "$lib/gen/${method.output.file.name}_pb"`)
   }
 
@@ -127,12 +149,12 @@ function generateRoute(schema: Schema, method: DescMethod) {
 
   // import request
   nf.print("Request")
-  nf.print(`<${editComponent} ${method.input.name}={request}/>`)
+  nf.print(`<${editComponent} ${method.input.name}={request}/> <br> <br>`)
 
-  nf.print(`<button on:click={makeRequest}> Send Request</button>`)
+  nf.print(`<button on:click={makeRequest}> Send Request</button> <br> <br>`)
 
   // import response
-  nf.print("Response")
+  nf.print("Response <br> <br>")
   nf.print(`<${viewComponent} ${method.output.name}={response}/>`)
 }
 

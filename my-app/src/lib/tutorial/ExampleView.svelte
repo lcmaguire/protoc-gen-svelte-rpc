@@ -3,8 +3,8 @@ import {Example} from "$lib/gen/example_pb"
 import ExtraView from '$lib/tutorial/ExtraView.svelte'
 export let message;
 if (message == null ) {
-    message = new Example ()
-}
+      message = new Example ()
+  }
 </script>
 <p class="message-name"> message.name : {message.name} </p>
 
@@ -16,3 +16,9 @@ if (message == null ) {
 
 <ExtraView message={message.extra} />
 
+
+        {#each message.tags as item }
+            <p class="message-tags"> message.tags : {item} </p>
+
+        {/each}
+        

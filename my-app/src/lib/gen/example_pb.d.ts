@@ -35,6 +35,11 @@ export declare class Example extends Message<Example> {
    */
   extra?: Extra;
 
+  /**
+   * @generated from field: repeated string tags = 6;
+   */
+  tags: string[];
+
   constructor(data?: PartialMessage<Example>);
 
   static readonly runtime: typeof proto3;

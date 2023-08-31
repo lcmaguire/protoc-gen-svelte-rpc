@@ -12,6 +12,7 @@ message Example {
     bool active = 3;
     int32 count = 4;
     Extra extra = 5;
+    repeated string tags = 6;
 }
 
 message Extra {

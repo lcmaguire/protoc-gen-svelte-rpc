@@ -16,6 +16,7 @@ export const Example = proto3.makeMessageType(
     { no: 3, name: "active", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 4, name: "count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 5, name: "extra", kind: "message", T: Extra },
+    { no: 6, name: "tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 

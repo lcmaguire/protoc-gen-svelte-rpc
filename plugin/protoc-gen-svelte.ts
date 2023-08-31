@@ -75,21 +75,32 @@ function generateView(schema: Schema, message: DescMessage) {
     }
   }
 
+  /*
+  // generate a view for all nested messages.
+  for (let m in message.nestedMessages) {
+    generateView(schema, message.nestedMessages[m])
+  }
+  */
+
   nf.print("<script> // @ts-nocheck")
   let messageImport = getMessageImportPath(message)
   nf.print(messageImport)
-  //nf.print(`export let ${message.name}`)
+
+  for (let i in imports) {
+    nf.print(imports[i])
+  }
 
   let varName = "message"
   nf.print(`export let ${varName};`) // todo have this be type asserted
   nf.print(`if (${varName} == null ) {
     ${varName} = new ${message.name} ()
 }`)
-  for (let i in imports) {
-    nf.print(imports[i])
-  }
+
 
   nf.print("</script>")
+
+  // todo support repeated fields
+
   for (let i = 0; i < message.fields.length; i++) {
     let currentField = message.fields[i]
     let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
@@ -102,8 +113,6 @@ function generateView(schema: Schema, message: DescMessage) {
         nf.print(`${getEnumView(currentField, fieldName)}`)
         break;
       case "message":
-        let i = nf.import(currentField.message)
-        nf.print(`<!-- ${i.from} ${i.id} ${i.name} -->`)
         nf.print(`${getMessageView(currentField.message, fieldName)}`)
         break;
     }
@@ -155,6 +164,53 @@ function editView(schema: Schema, message: DescMessage) {
     let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
     nf.print(`<input class="${fieldName}" bind:value={${fieldName}} >`)
   }
+
+  for (let i = 0; i < message.fields.length; i++) {
+    let currentField = message.fields[i]
+    let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
+
+    switch (currentField.fieldKind) {
+      case "scalar":
+        nf.print(`${editScalarView(currentField, fieldName)}`)
+        break
+      case "enum":
+        nf.print(`${editEnumView(currentField, fieldName)}`)
+        break;
+      case "message":
+        nf.print(`${editMessageView(currentField.message, fieldName)}`)
+        break;
+    }
+  }
+}
+
+function editScalarView(currentField: DescField, currentName: string) {
+  switch (currentField.scalar) {
+      case ScalarType.STRING:
+          return `<input class="${protoPathToCssPath(currentName)}" bind:value={${currentName}} >\n`
+      case ScalarType.BOOL:
+          return `<input class="${protoPathToCssPath(currentName)}" type=checkbox  bind:checked={${currentName}}>\n`
+              ;
+      case ScalarType.INT32: case ScalarType.INT64: case ScalarType.UINT32: case ScalarType.UINT64:
+          // todo enforce int in UI here
+          return `<input class="${protoPathToCssPath(currentName)}" type=number bind:value={${currentName}} min=0 step="1" >\n`
+      case ScalarType.FIXED32: case ScalarType.FIXED64: case ScalarType.SFIXED32: case ScalarType.SFIXED64: case ScalarType.DOUBLE: case ScalarType.FLOAT:
+          return `<input class="${protoPathToCssPath(currentName)}" type=number bind:value={${currentName}} min=0 >\n`
+      default:
+          return `<!-- ${currentField.scalar}  ${currentName} -->`
+  }
+}
+
+function editEnumView(currentField: DescField, currentName: string) {
+  let res = `<select bind:value={${currentName}}>\n`
+  for (let i = 0; i < currentField.enum!.values.length; i++) {
+      res += `<option value="${currentField.enum!.values[i].name}">${currentField.enum!.values[i].name}</option>\n`
+  }
+  res += `</select><br>\n`
+  return res
+}
+
+function editMessageView(message: DescMessage, currentName: string) {
+  return `<Edit${message.name} bind:${message.name}={${currentName}} />\n`
 }
 
 function generateRoute(schema: Schema, method: DescMethod) {

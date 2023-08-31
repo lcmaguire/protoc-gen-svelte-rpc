@@ -86,6 +86,7 @@ function generateView(schema: Schema, message: DescMessage) {
   let messageImport = getMessageImportPath(message)
   nf.print(messageImport)
 
+  // print imports
   for (let i in imports) {
     nf.print(imports[i])
   }
@@ -154,9 +155,33 @@ function getMessageView(message: DescMessage, currentName: string) {
 function editView(schema: Schema, message: DescMessage) {
   let nf = schema.generateFile(`lib/${message.typeName.replace(".", "/")}Edit.svelte`)
 
+  let imports = []
+
+  // todo make this reusable.
+  // gather imports
+  for (let i = 0; i < message.fields.length; i++) {
+    let curr = message.fields[i]
+    if (curr.message != undefined) {
+      let a = `import ${curr.message.name}Edit from '$lib/${curr.message.typeName.replace(".", "/")}Edit.svelte'`
+      imports.push(a)
+    }
+  }
+
   nf.print("<script> // @ts-nocheck")
+
+  // print imports
+  for (let i in imports) {
+    nf.print(imports[i])
+  }
+
+  let messageImport = getMessageImportPath(message)
+  nf.print(messageImport)
+
   let varName = "message"
-  nf.print(`export let ${varName};`) // todo have this be type asserted.
+  nf.print(`export let ${varName};`) // todo have this be type asserted
+  nf.print(`if (${varName} == null ) {
+    ${varName} = new ${message.name} ()
+}`)
 
   nf.print("</script>")
   for (let i = 0; i < message.fields.length; i++) {
@@ -210,7 +235,7 @@ function editEnumView(currentField: DescField, currentName: string) {
 }
 
 function editMessageView(message: DescMessage, currentName: string) {
-  return `<Edit${message.name} bind:${message.name}={${currentName}} />\n`
+  return `<${message.name}Edit bind:${message.name}={${currentName}} />\n`
 }
 
 function generateRoute(schema: Schema, method: DescMethod) {

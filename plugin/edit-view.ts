@@ -58,8 +58,9 @@ function editScalarView(currentField: DescField, currentName: string) {
         <label for="${cssClass}"> ${currentName} </label>\n
         {#each ${currentName} as item, key} 
             ${scalarSwitch(currentField, cssClass, "item")}
+            <button on:click={() => remove${currentName}Array(key)}> Remove from ${currentName}</button>
         {/each}
-        
+        <button on:click={push${currentName}Array}> Add to ${currentName}</button>
         `
     }
 

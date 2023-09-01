@@ -5,6 +5,5 @@ if (message == null ) {
     message = new GetExampleRequest ()
 }
 </script>
-<input class="message.name" bind:value={message.name} >
 <input class="message-name" bind:value={message.name} >
 

@@ -5,6 +5,5 @@ if (message == null ) {
     message = new Extra ()
 }
 </script>
-<input class="message.more" bind:value={message.more} >
 <input class="message-more" bind:value={message.more} >
 

@@ -10,6 +10,9 @@ export function editView(schema: Schema, message: DescMessage) {
     // gather imports
     let imports = gatherImportMessages(message, "Edit")
 
+    // gather functions used for manipulating arrays.
+    let arrayFunctions = gatherArrayFunctions(message)
+
     nf.print("<script> // @ts-nocheck")
 
     // print imports
@@ -26,13 +29,14 @@ export function editView(schema: Schema, message: DescMessage) {
     ${varName} = new ${message.name} ()
 }`)
 
-    nf.print("</script>")
-    for (let i = 0; i < message.fields.length; i++) {
-        let currentField = message.fields[i]
-        let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
-        nf.print(`<input class="${fieldName}" bind:value={${fieldName}} >`)
+    // print imports
+    for (let i in arrayFunctions) {
+        nf.print(arrayFunctions[i])
     }
 
+    nf.print("</script>")
+
+    // generate all fields for view.
     for (let i = 0; i < message.fields.length; i++) {
         let currentField = message.fields[i]
         let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
@@ -54,13 +58,13 @@ export function editView(schema: Schema, message: DescMessage) {
 function editScalarView(currentField: DescField, currentName: string) {
     let cssClass = protoPathToCssPath(currentName)
     if (currentField.repeated) {
-       return  `
+        return `
         <label for="${cssClass}"> ${currentName} </label>\n
         {#each ${currentName} as item, key} 
             ${scalarSwitch(currentField, cssClass, "item")}
-            <button on:click={() => remove${currentName}Array(key)}> Remove from ${currentName}</button>
+            <button on:click={() => remove${currentField.name}Array(key)}> Remove from ${currentName}</button>
         {/each}
-        <button on:click={push${currentName}Array}> Add to ${currentName}</button>
+        <button on:click={push${currentField.name}Array}> Add to ${currentName}</button>
         `
     }
 
@@ -98,9 +102,9 @@ function editMessageView(message: DescMessage, currentName: string) {
 
 // disgusting funcs that are used to add / remove from an array and make it reactivley render in UI.
 function generateArrayFunctions(fieldName: string, messageName: string, defaultType: string) {
-    let a = `function push${fieldName}Array() {if (${messageName}.${fieldName} == undefined) {${messageName}.${fieldName} = []};${messageName}.${fieldName} = ${messageName}.${fieldName}.concat(${defaultType})}`
-    let b = `function remove${fieldName}Array(index) {${messageName}.${fieldName}.splice(index, 1); ${messageName}.${fieldName} = ${messageName}.${fieldName}}`
-    return [a, b]
+    let a = `function push${fieldName}Array() {if (${messageName}.${fieldName} == undefined) {${messageName}.${fieldName} = []};${messageName}.${fieldName} = ${messageName}.${fieldName}.concat(${defaultType})}\n`
+    let b = `function remove${fieldName}Array(index) {${messageName}.${fieldName}.splice(index, 1); ${messageName}.${fieldName} = ${messageName}.${fieldName}}\n`
+    return a + b
 }
 
 function defaultRepeatedValue(currentField: DescField) {
@@ -117,4 +121,16 @@ function defaultRepeatedValue(currentField: DescField) {
             return "0"
     }
     return ""
+}
+
+function gatherArrayFunctions(message: DescMessage) {
+    let imports = []
+    for (let i = 0; i < message.fields.length; i++) {
+        let curr = message.fields[i]
+        if (curr.repeated) {
+            let a = generateArrayFunctions(curr.name, "message", defaultRepeatedValue(curr))
+            imports.push(a)
+        }
+    }
+    return imports
 }

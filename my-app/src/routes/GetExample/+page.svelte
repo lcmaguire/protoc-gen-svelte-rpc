@@ -8,6 +8,7 @@ let request = new GetExampleRequest()
 let response = new Example()
 
   async function makeRequest() {
+    console.log(request)
     response = await ExampleServiceClient.getExample(request)
 }
   

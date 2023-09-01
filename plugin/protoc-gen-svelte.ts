@@ -83,6 +83,7 @@ function generateRoute(schema: Schema, method: DescMethod) {
   // todo ${methodName} format in snakeCase.
   nf.print(`
   async function makeRequest() {
+    console.log(request)
     response = await ${serviceName}Client.${formatMethodName(methodName)}(request)
 }
   `)

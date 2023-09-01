@@ -96,7 +96,7 @@ function editEnumView(currentField: DescField, currentName: string) {
 }
 
 function editMessageView(message: DescMessage, currentName: string) {
-    return `<${message.name}Edit bind:${message.name}={${currentName}} />\n`
+    return `<${message.name}Edit bind:message={${currentName}} />\n`
 }
 
 

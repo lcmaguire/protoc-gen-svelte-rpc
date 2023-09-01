@@ -7,6 +7,38 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
+ * enum
+ *
+ * @generated from enum tutorial.Cleanliness
+ */
+export declare enum Cleanliness {
+  /**
+   * @generated from enum value: CLEANLINESS_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: CLEANLINESS_DISGUSTING = 1;
+   */
+  DISGUSTING = 1,
+
+  /**
+   * @generated from enum value: CLEANLINESS_BAD = 2;
+   */
+  BAD = 2,
+
+  /**
+   * @generated from enum value: CLEANLINESS_GOOD = 3;
+   */
+  GOOD = 3,
+
+  /**
+   * @generated from enum value: CLEANLINESS_EXCELLENT = 4;
+   */
+  EXCELLENT = 4,
+}
+
+/**
  * @generated from message tutorial.Example
  */
 export declare class Example extends Message<Example> {
@@ -36,9 +68,23 @@ export declare class Example extends Message<Example> {
   extra?: Extra;
 
   /**
+   * try embedded message
+   *
    * @generated from field: repeated string tags = 6;
    */
   tags: string[];
+
+  /**
+   * enum
+   *
+   * @generated from field: tutorial.Cleanliness clean = 8;
+   */
+  clean: Cleanliness;
+
+  /**
+   * @generated from field: tutorial.Example.BirdNest bird_nest = 9;
+   */
+  birdNest: Example_BirdNest;
 
   constructor(data?: PartialMessage<Example>);
 
@@ -53,6 +99,28 @@ export declare class Example extends Message<Example> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Example;
 
   static equals(a: Example | PlainMessage<Example> | undefined, b: Example | PlainMessage<Example> | undefined): boolean;
+}
+
+/**
+ * embedded enum
+ *
+ * @generated from enum tutorial.Example.BirdNest
+ */
+export declare enum Example_BirdNest {
+  /**
+   * @generated from enum value: BIRD_NEST_UNDEFINED = 0;
+   */
+  UNDEFINED = 0,
+
+  /**
+   * @generated from enum value: BIRD_NEST_DESTROYED = 1;
+   */
+  DESTROYED = 1,
+
+  /**
+   * @generated from enum value: BIRD_NEST_BUILT = 2;
+   */
+  BUILT = 2,
 }
 
 /**

@@ -55,7 +55,6 @@ function generateTs(schema: Schema) {
   }
 }
 
-
 function generateRoute(schema: Schema, method: DescMethod) {
   let nf = schema.generateFile(`routes/${method.name}/+page.svelte`)
 

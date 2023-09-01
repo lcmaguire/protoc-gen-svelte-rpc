@@ -13,7 +13,30 @@ message Example {
     int32 count = 4;
     Extra extra = 5;
     repeated string tags = 6;
+    // try embedded message
+    /*
+    message Nest {
+        string info = 1;
+    }
+    Nest nest = 7;
+    */
+
+    // enum
+    Cleanliness clean = 8;
+
+    // embedded enum
+    enum BirdNest {
+        BIRD_NEST_UNDEFINED = 0;
+        BIRD_NEST_DESTROYED = 1;
+        BIRD_NEST_BUILT = 2;
+    }
+    BirdNest bird_nest = 9;
 }
+
+/* 
+    things to try 
+    - oneof 
+*/
 
 message Extra {
     string more = 1;
@@ -21,4 +44,13 @@ message Extra {
 
 message GetExampleRequest {
     string name = 1;
+}
+
+// enum
+enum Cleanliness {
+    CLEANLINESS_UNSPECIFIED = 0;
+    CLEANLINESS_DISGUSTING = 1;
+    CLEANLINESS_BAD = 2;
+    CLEANLINESS_GOOD = 3;
+    CLEANLINESS_EXCELLENT = 4;
 }

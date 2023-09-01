@@ -22,3 +22,7 @@ if (message == null ) {
 
         {/each}
         
+<p class="message-clean"> message.clean : {message.clean} </p>
+
+<p class="message-birdNest"> message.birdNest : {message.birdNest} </p>
+

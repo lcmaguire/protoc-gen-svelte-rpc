@@ -5,8 +5,6 @@ import { Schema } from "@bufbuild/protoplugin"
 export function editView(schema: Schema, message: DescMessage) {
     let nf = schema.generateFile(`lib/${message.typeName.replace(".", "/")}Edit.svelte`)
 
-
-    // todo make this reusable.
     // gather imports
     let imports = gatherImportMessages(message, "Edit")
 
@@ -24,7 +22,7 @@ export function editView(schema: Schema, message: DescMessage) {
     nf.print(messageImport)
 
     let varName = "message"
-    nf.print(`export let ${varName};`) // todo have this be type asserted
+    nf.print(`export let ${varName};`) 
     nf.print(`if (${varName} == null ) {
     ${varName} = new ${message.name} ()
 }`)

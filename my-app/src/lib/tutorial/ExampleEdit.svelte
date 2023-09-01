@@ -29,3 +29,17 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
         {/each}
         <button on:click={pushtagsArray}> Add to message.tags</button>
         
+<select bind:value={message.clean}>
+<option value="CLEANLINESS_UNSPECIFIED">CLEANLINESS_UNSPECIFIED</option>
+<option value="CLEANLINESS_DISGUSTING">CLEANLINESS_DISGUSTING</option>
+<option value="CLEANLINESS_BAD">CLEANLINESS_BAD</option>
+<option value="CLEANLINESS_GOOD">CLEANLINESS_GOOD</option>
+<option value="CLEANLINESS_EXCELLENT">CLEANLINESS_EXCELLENT</option>
+</select><br>
+
+<select bind:value={message.birdNest}>
+<option value="BIRD_NEST_UNDEFINED">BIRD_NEST_UNDEFINED</option>
+<option value="BIRD_NEST_DESTROYED">BIRD_NEST_DESTROYED</option>
+<option value="BIRD_NEST_BUILT">BIRD_NEST_BUILT</option>
+</select><br>
+

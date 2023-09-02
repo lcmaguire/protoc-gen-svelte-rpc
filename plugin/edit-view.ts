@@ -28,7 +28,7 @@ export function editView(schema: Schema, message: DescMessage) {
     nf.print(messageImport)
 
     let varName = "message"
-    nf.print(`export let ${varName};`) 
+    nf.print(`export let ${varName};`)
     nf.print(`if (${varName} == null ) {
     ${varName} = new ${messageName} ()
 }`)
@@ -50,27 +50,28 @@ export function editView(schema: Schema, message: DescMessage) {
         let currentField = message.fields[i]
         let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
 
+        // additional html attributes to add into html. Currently used for oneof binding.
+        let additionalAtrributes = ""
         if (currentField.oneof) {
-            nf.print("oneof")
+            additionalAtrributes = ` on:input={() => handle${messageName}Oneof("${fieldName}")} `
         }
 
         switch (currentField.fieldKind) {
             case "scalar":
-                nf.print(`${editScalarView(currentField, fieldName)}`)
+                nf.print(`${editScalarView(currentField, fieldName, additionalAtrributes)}`)
                 break
             case "enum":
-                nf.print(`${editEnumView(currentField, fieldName)}`)
+                nf.print(`${editEnumView(currentField, fieldName, additionalAtrributes)}`)
                 break;
             case "message":
-                nf.print(`${editMessageView(currentField.message, fieldName)}`)
+                nf.print(`${editMessageView(currentField.message, fieldName, additionalAtrributes)}`)
                 break;
         }
     }
 }
 
-function editScalarView(currentField: DescField, currentName: string) {
+function editScalarView(currentField: DescField, currentName: string, additionalAtrributes: string) {
     let cssClass = protoPathToCssPath(currentName)
-    let additionalAtrributes = ""
     if (currentField.repeated) {
         return `
         <label for="${cssClass}"> ${currentName} </label>\n
@@ -82,34 +83,26 @@ function editScalarView(currentField: DescField, currentName: string) {
         `
     }
 
-    if (currentField.oneof) {
-        // on:input={() => handleOperatingSystemOneof("linuxDistro")
-        // should probably be handleMessageName
-        additionalAtrributes = `on:input={() => handle${currentField.name}Oneof("${currentName}")`
-    }
-
     return scalarSwitch(currentField, cssClass, currentName, additionalAtrributes)
 }
 
-function scalarSwitch(currentField: DescField, cssClass: string, currentName: string, additionalAttributes :string) {
-
-
+function scalarSwitch(currentField: DescField, cssClass: string, currentName: string, additionalAttributes: string) {
     switch (currentField.scalar) {
         case ScalarType.STRING:
             return `<input class="${cssClass}" bind:value={${currentName}} ${additionalAttributes}>\n`
         case ScalarType.BOOL:
             return `<input class="${cssClass}" type=checkbox  bind:checked={${currentName}} ${additionalAttributes}>\n`;
         case ScalarType.INT32: case ScalarType.INT64: case ScalarType.UINT32: case ScalarType.UINT64:
-            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0 step="1" ${additionalAttributes}>\n`
+            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0 step="1" >\n`
         case ScalarType.FIXED32: case ScalarType.FIXED64: case ScalarType.SFIXED32: case ScalarType.SFIXED64: case ScalarType.DOUBLE: case ScalarType.FLOAT:
-            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0 ${additionalAttributes}>\n`
+            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0 >\n`
         default:
             return `<!-- ${currentField.scalar}  ${currentName} -->`
     }
 }
 
-function editEnumView(currentField: DescField, currentName: string) {
-    let res = `<select bind:value={${currentName}}>\n`
+function editEnumView(currentField: DescField, currentName: string, additionalAtrributes: string) {
+    let res = `<select bind:value={${currentName}} ${additionalAtrributes}>\n`
     for (let i = 0; i < currentField.enum!.values.length; i++) {
         res += `<option value="${currentField.enum!.values[i].name}">${currentField.enum!.values[i].name}</option>\n`
     }
@@ -117,10 +110,9 @@ function editEnumView(currentField: DescField, currentName: string) {
     return res
 }
 
-function editMessageView(message: DescMessage, currentName: string) {
-    return `<${message.name}Edit bind:message={${currentName}} />\n`
+function editMessageView(message: DescMessage, currentName: string, additionalAtrributes: string) {
+    return `<${message.name}Edit bind:message={${currentName}} ${additionalAtrributes} />\n`
 }
-
 
 // disgusting funcs that are used to add / remove from an array and make it reactivley render in UI.
 function generateArrayFunctions(fieldName: string, messageName: string, defaultType: string) {
@@ -157,9 +149,8 @@ function gatherArrayFunctions(message: DescMessage) {
     return imports
 }
 
-function generateOneofHandlers(desc: DescOneof){
-    desc.fields
-    let oneOfName = desc.name
+function generateOneofHandlers(desc: DescOneof) {
+    let oneOfName = protoCamelCase(desc.name)
     // TODO see if it is possible to use for loops withing templates as is the case in golang templates. 
     let res = `
     function handle${oneOfName}Oneof(input) {
@@ -173,7 +164,7 @@ function generateOneofHandlers(desc: DescOneof){
         break;
         `
     }
-    res +=`    }
+    res += `    }
     }`
     return res
 }

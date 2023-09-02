@@ -1,49 +1,31 @@
-<script>
-    // @ts-nocheck
-    import { OperatingSystem } from "$lib/gen/example_pb";
-    export let message;
-    if (message == null) {
-        message = new OperatingSystem();
-        // message.operatingSystem.case = ""
-        // message.operatingSystem.value = ""
-        // message.
-        console.log(message);
-    }
+<script> // @ts-nocheck
+import {OperatingSystem} from "$lib/gen/example_pb"
+export let message;
+if (message == null ) {
+    message = new OperatingSystem ()
+}
 
-    // option one get func like below for all fields.
-    function handleOperatingSystemOneof(input) {
+    function handleoperatingSystemOneof(input) {
         message.operatingSystem.case = input
         switch (input) {
-            case "windowsVersion":
-                message.operatingSystem.value = message.windowsVersion;
-                break;
-                case "macVersion":
-                message.operatingSystem.value = message.macVersion;
-                break;
-                case "linuxDistro":
-                message.operatingSystem.value = message.linuxDistro;
-                break;
-        }
+case "windows_version":
+        message.operatingSystem.value = message.windows_version;
+        break;
+        case "mac_version":
+        message.operatingSystem.value = message.mac_version;
+        break;
+        case "linux_distro":
+        message.operatingSystem.value = message.linux_distro;
+        break;
+            }
     }
 </script>
+oneof
+<input class="message-windowsVersion" bind:value={message.windowsVersion}  on:input={() => handlewindows_versionOneof("message.windowsVersion")} >
 
 oneof
-<input
-    class="message-windowsVersion"
-    bind:value={message.windowsVersion}
-    on:input={() => handleOperatingSystemOneof("windowsVersion")}
-/>
+<input class="message-macVersion" bind:value={message.macVersion}  on:input={() => handlemac_versionOneof("message.macVersion")} >
 
 oneof
-<input
-    class="message-macVersion"
-    bind:value={message.macVersion}
-    on:input={() => handleOperatingSystemOneof("macVersion")}
-/>
+<input class="message-linuxDistro" bind:value={message.linuxDistro}  on:input={() => handlelinux_distroOneof("message.linuxDistro")} >
 
-oneof
-<input
-    class="message-linuxDistro"
-    bind:value={message.linuxDistro}
-    on:input={() => handleOperatingSystemOneof("linuxDistro")}
-/>

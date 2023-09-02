@@ -68,8 +68,6 @@ export declare class Example extends Message<Example> {
   extra?: Extra;
 
   /**
-   * try embedded message
-   *
    * @generated from field: repeated string tags = 6;
    */
   tags: string[];
@@ -92,6 +90,8 @@ export declare class Example extends Message<Example> {
   birdNest: Example_BirdNest;
 
   /**
+   * message with oneof
+   *
    * @generated from field: tutorial.OperatingSystem os = 10;
    */
   os?: OperatingSystem;
@@ -134,6 +134,8 @@ export declare enum Example_BirdNest {
 }
 
 /**
+ * embedded message
+ *
  * @generated from message tutorial.Example.Nest
  */
 export declare class Example_Nest extends Message<Example_Nest> {
@@ -214,9 +216,9 @@ export declare class OperatingSystem extends Message<OperatingSystem> {
    */
   operatingSystem: {
     /**
-     * @generated from field: string windows_version = 1;
+     * @generated from field: int32 windows_version = 1;
      */
-    value: string;
+    value: number;
     case: "windowsVersion";
   } | {
     /**
@@ -226,10 +228,10 @@ export declare class OperatingSystem extends Message<OperatingSystem> {
     case: "macVersion";
   } | {
     /**
-     * @generated from field: string linux_distro = 3;
+     * @generated from field: tutorial.OperatingSystem.LinuxInfo linux_info = 3;
      */
-    value: string;
-    case: "linuxDistro";
+    value: OperatingSystem_LinuxInfo;
+    case: "linuxInfo";
   } | { case: undefined; value?: undefined };
 
   constructor(data?: PartialMessage<OperatingSystem>);
@@ -245,5 +247,29 @@ export declare class OperatingSystem extends Message<OperatingSystem> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OperatingSystem;
 
   static equals(a: OperatingSystem | PlainMessage<OperatingSystem> | undefined, b: OperatingSystem | PlainMessage<OperatingSystem> | undefined): boolean;
+}
+
+/**
+ * @generated from message tutorial.OperatingSystem.LinuxInfo
+ */
+export declare class OperatingSystem_LinuxInfo extends Message<OperatingSystem_LinuxInfo> {
+  /**
+   * @generated from field: string distro = 1;
+   */
+  distro: string;
+
+  constructor(data?: PartialMessage<OperatingSystem_LinuxInfo>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tutorial.OperatingSystem.LinuxInfo";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OperatingSystem_LinuxInfo;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OperatingSystem_LinuxInfo;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OperatingSystem_LinuxInfo;
+
+  static equals(a: OperatingSystem_LinuxInfo | PlainMessage<OperatingSystem_LinuxInfo> | undefined, b: OperatingSystem_LinuxInfo | PlainMessage<OperatingSystem_LinuxInfo> | undefined): boolean;
 }
 

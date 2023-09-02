@@ -55,6 +55,8 @@ export const Example_BirdNest = proto3.makeEnum(
 );
 
 /**
+ * embedded message
+ *
  * @generated from message tutorial.Example.Nest
  */
 export const Example_Nest = proto3.makeMessageType(
@@ -91,9 +93,20 @@ export const GetExampleRequest = proto3.makeMessageType(
 export const OperatingSystem = proto3.makeMessageType(
   "tutorial.OperatingSystem",
   () => [
-    { no: 1, name: "windows_version", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "operating_system" },
+    { no: 1, name: "windows_version", kind: "scalar", T: 5 /* ScalarType.INT32 */, oneof: "operating_system" },
     { no: 2, name: "mac_version", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "operating_system" },
-    { no: 3, name: "linux_distro", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "operating_system" },
+    { no: 3, name: "linux_info", kind: "message", T: OperatingSystem_LinuxInfo, oneof: "operating_system" },
   ],
+);
+
+/**
+ * @generated from message tutorial.OperatingSystem.LinuxInfo
+ */
+export const OperatingSystem_LinuxInfo = proto3.makeMessageType(
+  "tutorial.OperatingSystem.LinuxInfo",
+  () => [
+    { no: 1, name: "distro", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+  {localName: "OperatingSystem_LinuxInfo"},
 );
 

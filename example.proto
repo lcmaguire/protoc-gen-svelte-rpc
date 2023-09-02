@@ -13,8 +13,8 @@ message Example {
     int32 count = 4;
     Extra extra = 5;
     repeated string tags = 6;
-    // try embedded message
     
+    // embedded message
     message Nest {
         string info = 1;
     }
@@ -32,6 +32,7 @@ message Example {
     }
     BirdNest bird_nest = 9;
 
+    // message with oneof
     OperatingSystem os = 10;
 }
 
@@ -61,9 +62,12 @@ enum Cleanliness {
 }
 
 message OperatingSystem {
+    message LinuxInfo{
+        string distro = 1;
+    }
     oneof operating_system {
-        string windows_version = 1;
+        int32 windows_version = 1;
         string mac_version = 2;
-        string linux_distro = 3;
+        LinuxInfo linux_info = 3;
     }
 } 

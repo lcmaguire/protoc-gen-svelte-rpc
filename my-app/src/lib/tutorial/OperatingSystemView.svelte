@@ -1,5 +1,6 @@
 <script> // @ts-nocheck
 import {OperatingSystem} from "$lib/gen/example_pb"
+import LinuxInfoView from '$lib/tutorial/OperatingSystem.LinuxInfoView.svelte'
 export let message;
 if (message == null ) {
       message = new OperatingSystem ()
@@ -13,7 +14,7 @@ if (message == null ) {
 <p class="message-operatingSystem.value"> message.operatingSystem.value : {message.operatingSystem.value} </p>
 
 {/if}
-{#if message.operatingSystem.case == "linuxDistro"}
-<p class="message-operatingSystem.value"> message.operatingSystem.value : {message.operatingSystem.value} </p>
+{#if message.operatingSystem.case == "linuxInfo"}
+<LinuxInfoView message={message.operatingSystem.value} />
 
 {/if}

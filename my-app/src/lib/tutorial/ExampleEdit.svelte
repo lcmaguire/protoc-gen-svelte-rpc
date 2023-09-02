@@ -17,8 +17,8 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 
 <input class="message-active" type=checkbox  bind:checked={message.active} >
 
-<input class="message-count" type=number bind:value={message.count} min=0 step="1" >
-
+<input class="message-count" type=number bind:value={message.count} min=0 step="1"   >
+ 
 <ExtraEdit bind:message={message.extra}  />
 
 

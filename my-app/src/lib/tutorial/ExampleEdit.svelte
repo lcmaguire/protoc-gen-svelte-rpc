@@ -19,7 +19,7 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 
 <input class="message-count" type=number bind:value={message.count} min=0 step="1" >
 
-<ExtraEdit bind:message={message.extra} />
+<ExtraEdit bind:message={message.extra}  />
 
 
         <label for="message-tags"> message.tags </label>
@@ -31,9 +31,9 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
         {/each}
         <button on:click={pushtagsArray}> Add to message.tags</button>
         
-<NestEdit bind:message={message.nest} />
+<NestEdit bind:message={message.nest}  />
 
-<select bind:value={message.clean}>
+<select bind:value={message.clean} >
 <option value="CLEANLINESS_UNSPECIFIED">CLEANLINESS_UNSPECIFIED</option>
 <option value="CLEANLINESS_DISGUSTING">CLEANLINESS_DISGUSTING</option>
 <option value="CLEANLINESS_BAD">CLEANLINESS_BAD</option>
@@ -41,11 +41,11 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 <option value="CLEANLINESS_EXCELLENT">CLEANLINESS_EXCELLENT</option>
 </select><br>
 
-<select bind:value={message.birdNest}>
+<select bind:value={message.birdNest} >
 <option value="BIRD_NEST_UNDEFINED">BIRD_NEST_UNDEFINED</option>
 <option value="BIRD_NEST_DESTROYED">BIRD_NEST_DESTROYED</option>
 <option value="BIRD_NEST_BUILT">BIRD_NEST_BUILT</option>
 </select><br>
 
-<OperatingSystemEdit bind:message={message.os} />
+<OperatingSystemEdit bind:message={message.os}  />
 

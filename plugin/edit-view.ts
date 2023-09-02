@@ -53,7 +53,7 @@ export function editView(schema: Schema, message: DescMessage) {
         // additional html attributes to add into html. Currently used for oneof binding.
         let additionalAtrributes = ""
         if (currentField.oneof) {
-            additionalAtrributes = ` on:input={() => handle${messageName}Oneof("${fieldName}")} `
+            additionalAtrributes = ` on:input={() => handle${messageName}Oneof("${protoCamelCase(currentField.name)}")} `
         }
 
         switch (currentField.fieldKind) {
@@ -150,7 +150,8 @@ function gatherArrayFunctions(message: DescMessage) {
 }
 
 function generateOneofHandlers(desc: DescOneof) {
-    let oneOfName = protoCamelCase(desc.name)
+    let oneOfName = desc.parent.name //protoCamelCase(desc.name)
+    //desc.parent.name
     // TODO see if it is possible to use for loops withing templates as is the case in golang templates. 
     let res = `
     function handle${oneOfName}Oneof(input) {
@@ -159,8 +160,9 @@ function generateOneofHandlers(desc: DescOneof) {
 
     for (let f in desc.fields) {
         let currField = desc.fields[f]
-        res += `case "${currField.name}":
-        message.${oneOfName}.value = message.${currField.name};
+        let fieldName = protoCamelCase(currField.name)
+        res += `case "${fieldName}":
+        message.${oneOfName}.value = message.${fieldName};
         break;
         `
     }

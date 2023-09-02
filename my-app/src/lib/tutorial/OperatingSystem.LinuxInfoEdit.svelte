@@ -5,5 +5,7 @@ if (message == null ) {
     message = new OperatingSystem_LinuxInfo ()
 }
 </script>
+
 <input class="message-distro" bind:value={message.distro} >
+
 

@@ -1,61 +1,56 @@
-<script>
-    // @ts-nocheck
-    import LinuxInfoEdit from "$lib/tutorial/OperatingSystem.LinuxInfoEdit.svelte";
-    import { OperatingSystem } from "$lib/gen/example_pb";
-    export let message;
-    if (message == null) {
-        message = new OperatingSystem();
-    }
+<script> // @ts-nocheck
+import LinuxInfoEdit from '$lib/tutorial/OperatingSystem.LinuxInfoEdit.svelte'
+import {OperatingSystem} from "$lib/gen/example_pb"
+export let message;
+if (message == null ) {
+    message = new OperatingSystem ()
+}
+import {OperatingSystem_LinuxInfo} from "$lib/gen/example_pb"
 
-    let view = "";
-    $: view, handleOperatingSystemOneof(view) 
 
-    function handleOperatingSystemOneof(input) {
-        console.log(input);
-        message.operatingSystem.case = input;
-        switch (input) {
-            case "windowsVersion":
-                message.operatingSystem.value = message.windowsVersion;
-                break;
-            case "macVersion":
-                message.operatingSystem.value = message.macVersion;
-                break;
+    // any messages within oneof need to be initialized.
+    function setupOneof() {
+        message = new OperatingSystem(); // todo double check template
+        message.operatingSystem.case = view;
+        switch (message.operatingSystem.case) {
             case "linuxInfo":
-                message.operatingSystem.value = message.linuxInfo;
-                break;
+            message.operatingSystem.value = new OperatingSystem_LinuxInfo(); // todo get this to include ParentName.
+            break;
+        default:            
         }
     }
+    let view;
+    $: view, setupOneof();
+    
 </script>
-
 <label>
-	<input type="radio" bind:group={view} value={"windowsVersion"} />
-	windowsVersion
-</label>
 
-<label>
-	<input type="radio" bind:group={view} value={"macVersion"} />
-	macVersion
-</label>
+    <input type="radio" bind:group={view} value={"windowsVersion"} />
+    
+    windowsVersion
+    
+    </label><label>
 
-<label>
-	<input type="radio" bind:group={view} value={"linuxInfo"} />
-	linuxInfo
-</label>
+    <input type="radio" bind:group={view} value={"macVersion"} />
+    
+    macVersion
+    
+    </label><label>
 
+    <input type="radio" bind:group={view} value={"linuxInfo"} />
+    
+    linuxInfo
+    
+    </label>
 {#if view == "windowsVersion"}
-<input
-    class="message-windowsVersion"
-    type="number"
-    bind:value={message.windowsVersion}
-    min="0"
-    step="1"
-/>
+<input class="message-operatingSystem.value" type=number bind:value={message.operatingSystem.value} min=0 step="1"   >
+ 
 {/if}
-
 {#if view == "macVersion"}
-<input class="message-macVersion" bind:value={message.macVersion} />
-{/if}
+<input class="message-operatingSystem.value" bind:value={message.operatingSystem.value} >
 
-{#if view == "linuxInfo"} 
-<LinuxInfoEdit bind:message={message.linuxInfo} />
+{/if}
+{#if view == "linuxInfo"}
+<LinuxInfoEdit bind:message={message.operatingSystem.value}  />
+
 {/if}

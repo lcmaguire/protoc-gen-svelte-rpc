@@ -5,5 +5,7 @@ if (message == null ) {
     message = new Example_Nest ()
 }
 </script>
+
 <input class="message-info" bind:value={message.info} >
+
 

@@ -1,5 +1,5 @@
 import { DescField, DescMessage, DescOneof, ScalarType } from "@bufbuild/protobuf"
-import { gatherImportMessages, getMessageImportPath, getMessageName, protoCamelCase, protoPathToCssPath } from "./helpers"
+import { formatMethodName, gatherImportMessages, getMessageImportPath, getMessageName, protoCamelCase, protoPathToCssPath } from "./helpers"
 import { Schema } from "@bufbuild/protoplugin"
 
 export function editView(schema: Schema, message: DescMessage) {
@@ -40,10 +40,27 @@ export function editView(schema: Schema, message: DescMessage) {
 
     // generate functions for binding oneofs.
     for (let o in message.oneofs) {
+        // get any imports
+        for (let i in message.oneofs[o].fields) {
+            let curr = message.oneofs[o].fields[i]
+            if (curr.message != undefined) {
+                let oneofMessage = curr.message
+                let messageImport = getMessageImportPath(oneofMessage)
+                nf.print(messageImport)
+            }
+        }
+
         nf.print(generateOneofHandlers(message.oneofs[o]))
     }
 
+
     nf.print("</script>")
+
+    //
+    for (let o in message.oneofs) {
+        let rad = generateOneOfRadios(message.oneofs[o])
+        nf.print(rad)
+    }
 
     // generate all fields for view.
     for (let i = 0; i < message.fields.length; i++) {
@@ -51,23 +68,31 @@ export function editView(schema: Schema, message: DescMessage) {
         let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
 
         // additional html attributes to add into html. Currently used for oneof binding.
-        let additionalAtrributes = ""
-        if (currentField.oneof) {
-            additionalAtrributes = ` on:input={() => handle${messageName}Oneof("${protoCamelCase(currentField.name)}")} `
-        }
 
-        switch (currentField.fieldKind) {
-            case "scalar":
-                nf.print(`${editScalarView(currentField, fieldName, additionalAtrributes)}`)
-                break
-            case "enum":
-                nf.print(`${editEnumView(currentField, fieldName, additionalAtrributes)}`)
-                break;
-            case "message":
-                nf.print(`${editMessageView(currentField.message, fieldName, additionalAtrributes)}`)
-                break;
+        let prefix = ""
+        let suffix = ""
+        if (currentField.oneof) {
+            fieldName = `message.${formatMethodName(messageName)}.value`
+            prefix = `{#if view == "${protoCamelCase(currentField.name)}"}`
+            suffix = "{/if}"
         }
+        nf.print(prefix)
+        nf.print(inputFieldKind(currentField, fieldName))
+        nf.print(suffix)
+
     }
+}
+
+function inputFieldKind(currentField: DescField, fieldName: string) {
+    switch (currentField.fieldKind) {
+        case "scalar":
+            return `${editScalarView(currentField, fieldName, "")}`
+        case "enum":
+            return `${editEnumView(currentField, fieldName, "")}`
+        case "message":
+            return `${editMessageView(currentField.message, fieldName, "")}`
+    }
+    return ""
 }
 
 function editScalarView(currentField: DescField, currentName: string, additionalAtrributes: string) {
@@ -150,24 +175,55 @@ function gatherArrayFunctions(message: DescMessage) {
 }
 
 function generateOneofHandlers(desc: DescOneof) {
-    let handleFuncName = desc.parent.name // this is the value which the field implementing it gets. format CapitalizedSnakeCase: 
     let oneOfVarName = protoCamelCase(desc.name) // this is the format the generated class uses format snakeCase
 
     // TODO see if it is possible to use for loops withing templates as is the case in golang templates. 
     let res = `
-    function handle${handleFuncName}Oneof(input) {
-        message.${oneOfVarName}.case = input
-        switch (input) {\n`
+
+    // any messages within oneof need to be initialized.
+    function setupOneof() {
+        message = new ${desc.parent.name}(); // todo double check template
+        message.${oneOfVarName}.case = view;
+        switch (message.${oneOfVarName}.case) {
+            `
+
+
+
 
     for (let f in desc.fields) {
         let currField = desc.fields[f]
         let fieldName = protoCamelCase(currField.name)
-        res += `case "${fieldName}":
-        message.${oneOfVarName}.value = message.${fieldName};
-        break;
-        `
+        if (currField.message != undefined) {
+            res += `case "${fieldName}":
+            message.${oneOfVarName}.value = new ${getMessageName(currField.message)}(); // todo get this to include ParentName.
+            break;
+        default:`
+        }
+
     }
-    res += `    }
-    }`
+
+    res += `            
+        }
+    }
+    let view;
+    $: view, setupOneof();
+    `
     return res
+}
+
+function generateOneOfRadios(desc: DescOneof) {
+    let out = ""
+    for (let f in desc.fields) {
+        let currField = desc.fields[f]
+        let fieldName = protoCamelCase(currField.name)
+        let template = `<label>
+
+    <input type="radio" bind:group={view} value={"${fieldName}"} />
+    
+    ${fieldName}
+    
+    </label>`
+        out += template
+    }
+    return out
 }

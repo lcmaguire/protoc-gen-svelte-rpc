@@ -11,15 +11,26 @@ function pushtagsArray() {if (message.tags == undefined) {message.tags = []};mes
 function removetagsArray(index) {message.tags.splice(index, 1); message.tags = message.tags}
 
 </script>
+
 <input class="message-name" bind:value={message.name} >
+
+
 
 <input class="message-displayName" bind:value={message.displayName} >
 
+
+
 <input class="message-active" type=checkbox  bind:checked={message.active} >
+
+
 
 <input class="message-count" type=number bind:value={message.count} min=0 step="1"   >
  
+
+
 <ExtraEdit bind:message={message.extra}  />
+
+
 
 
         <label for="message-tags"> message.tags </label>
@@ -31,7 +42,11 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
         {/each}
         <button on:click={pushtagsArray}> Add to message.tags</button>
         
+
+
 <NestEdit bind:message={message.nest}  />
+
+
 
 <select bind:value={message.clean} >
 <option value="CLEANLINESS_UNSPECIFIED">CLEANLINESS_UNSPECIFIED</option>
@@ -41,11 +56,16 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 <option value="CLEANLINESS_EXCELLENT">CLEANLINESS_EXCELLENT</option>
 </select><br>
 
+
+
 <select bind:value={message.birdNest} >
 <option value="BIRD_NEST_UNDEFINED">BIRD_NEST_UNDEFINED</option>
 <option value="BIRD_NEST_DESTROYED">BIRD_NEST_DESTROYED</option>
 <option value="BIRD_NEST_BUILT">BIRD_NEST_BUILT</option>
 </select><br>
 
+
+
 <OperatingSystemEdit bind:message={message.os}  />
+
 

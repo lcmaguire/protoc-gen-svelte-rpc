@@ -33,6 +33,7 @@ export const Example = proto3.makeMessageType(
     { no: 4, name: "count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 5, name: "extra", kind: "message", T: Extra },
     { no: 6, name: "tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 7, name: "nest", kind: "message", T: Example_Nest },
     { no: 8, name: "clean", kind: "enum", T: proto3.getEnumType(Cleanliness) },
     { no: 9, name: "bird_nest", kind: "enum", T: proto3.getEnumType(Example_BirdNest) },
   ],
@@ -50,6 +51,17 @@ export const Example_BirdNest = proto3.makeEnum(
     {no: 1, name: "BIRD_NEST_DESTROYED", localName: "DESTROYED"},
     {no: 2, name: "BIRD_NEST_BUILT", localName: "BUILT"},
   ],
+);
+
+/**
+ * @generated from message tutorial.Example.Nest
+ */
+export const Example_Nest = proto3.makeMessageType(
+  "tutorial.Example.Nest",
+  () => [
+    { no: 1, name: "info", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+  {localName: "Example_Nest"},
 );
 
 /**

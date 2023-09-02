@@ -1,5 +1,6 @@
 <script> // @ts-nocheck
 import ExtraEdit from '$lib/tutorial/ExtraEdit.svelte'
+import NestEdit from '$lib/tutorial/Example.NestEdit.svelte'
 import {Example} from "$lib/gen/example_pb"
 export let message;
 if (message == null ) {
@@ -29,6 +30,8 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
         {/each}
         <button on:click={pushtagsArray}> Add to message.tags</button>
         
+<NestEdit bind:message={message.nest} />
+
 <select bind:value={message.clean}>
 <option value="CLEANLINESS_UNSPECIFIED">CLEANLINESS_UNSPECIFIED</option>
 <option value="CLEANLINESS_DISGUSTING">CLEANLINESS_DISGUSTING</option>

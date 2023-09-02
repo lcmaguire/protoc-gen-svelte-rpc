@@ -75,6 +75,11 @@ export declare class Example extends Message<Example> {
   tags: string[];
 
   /**
+   * @generated from field: tutorial.Example.Nest nest = 7;
+   */
+  nest?: Example_Nest;
+
+  /**
    * enum
    *
    * @generated from field: tutorial.Cleanliness clean = 8;
@@ -121,6 +126,30 @@ export declare enum Example_BirdNest {
    * @generated from enum value: BIRD_NEST_BUILT = 2;
    */
   BUILT = 2,
+}
+
+/**
+ * @generated from message tutorial.Example.Nest
+ */
+export declare class Example_Nest extends Message<Example_Nest> {
+  /**
+   * @generated from field: string info = 1;
+   */
+  info: string;
+
+  constructor(data?: PartialMessage<Example_Nest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tutorial.Example.Nest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Example_Nest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Example_Nest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Example_Nest;
+
+  static equals(a: Example_Nest | PlainMessage<Example_Nest> | undefined, b: Example_Nest | PlainMessage<Example_Nest> | undefined): boolean;
 }
 
 /**

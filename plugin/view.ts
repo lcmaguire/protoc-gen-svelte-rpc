@@ -1,5 +1,5 @@
 import { DescField, DescMessage, ScalarType } from "@bufbuild/protobuf"
-import { gatherImportMessages, getMessageImportPath, protoCamelCase, protoPathToCssPath } from "./helpers"
+import { gatherImportMessages, getMessageImportPath, getMessageName, protoCamelCase, protoPathToCssPath } from "./helpers"
 import { Schema } from "@bufbuild/protoplugin"
 
 
@@ -9,12 +9,11 @@ export function generateView(schema: Schema, message: DescMessage) {
 
     let imports = gatherImportMessages(message, "View")
 
-    /*
     // generate a view for all nested messages.
     for (let m in message.nestedMessages) {
       generateView(schema, message.nestedMessages[m])
     }
-    */
+    
 
     nf.print("<script> // @ts-nocheck")
     let messageImport = getMessageImportPath(message)
@@ -25,10 +24,12 @@ export function generateView(schema: Schema, message: DescMessage) {
         nf.print(imports[i])
     }
 
+    let messageName = getMessageName(message)
+
     let varName = "message"
     nf.print(`export let ${varName};`) // todo have this be type asserted
     nf.print(`if (${varName} == null ) {
-      ${varName} = new ${message.name} ()
+      ${varName} = new ${messageName} ()
   }`)
 
 

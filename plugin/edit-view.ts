@@ -1,5 +1,5 @@
 import { DescField, DescMessage, ScalarType } from "@bufbuild/protobuf"
-import { gatherImportMessages, getMessageImportPath, protoCamelCase, protoPathToCssPath } from "./helpers"
+import { gatherImportMessages, getMessageImportPath, getMessageName, protoCamelCase, protoPathToCssPath } from "./helpers"
 import { Schema } from "@bufbuild/protoplugin"
 
 export function editView(schema: Schema, message: DescMessage) {
@@ -8,10 +8,16 @@ export function editView(schema: Schema, message: DescMessage) {
     // gather imports
     let imports = gatherImportMessages(message, "Edit")
 
+    // generate all nested messages
+    for (let n in message.nestedMessages) {
+        editView(schema, message.nestedMessages[n])
+    }
+
     // gather functions used for manipulating arrays.
     let arrayFunctions = gatherArrayFunctions(message)
 
     nf.print("<script> // @ts-nocheck")
+    let messageName = getMessageName(message)
 
     // print imports
     for (let i in imports) {
@@ -24,7 +30,7 @@ export function editView(schema: Schema, message: DescMessage) {
     let varName = "message"
     nf.print(`export let ${varName};`) 
     nf.print(`if (${varName} == null ) {
-    ${varName} = new ${message.name} ()
+    ${varName} = new ${messageName} ()
 }`)
 
     // print imports

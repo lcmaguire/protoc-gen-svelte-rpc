@@ -46,7 +46,10 @@ export function formatMethodName(input: string) {
 }
 
 export function getMessageImportPath(message: DescMessage) {
-    return `import {${message.name}} from "$lib/gen/${message.file.name}_pb"`
+    if (message.parent == undefined) {
+        return `import {${message.name}} from "$lib/gen/${message.file.name}_pb"`
+    }
+    return `import {${message.parent.name}_${message.name}} from "$lib/gen/${message.file.name}_pb"`
 }
 
 export function gatherImportMessages(message: DescMessage, viewSuffix :string) {
@@ -59,4 +62,11 @@ export function gatherImportMessages(message: DescMessage, viewSuffix :string) {
         }
     }
     return imports
+}
+
+export function getMessageName(message: DescMessage){
+    if (message.parent == undefined) {
+       return message.name
+    }
+    return `${message.parent.name}_${message.name}`
 }

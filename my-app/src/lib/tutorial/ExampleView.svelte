@@ -1,6 +1,7 @@
 <script> // @ts-nocheck
 import {Example} from "$lib/gen/example_pb"
 import ExtraView from '$lib/tutorial/ExtraView.svelte'
+import NestView from '$lib/tutorial/Example.NestView.svelte'
 export let message;
 if (message == null ) {
       message = new Example ()
@@ -22,6 +23,8 @@ if (message == null ) {
 
         {/each}
         
+<NestView message={message.nest} />
+
 <p class="message-clean"> message.clean : {message.clean} </p>
 
 <p class="message-birdNest"> message.birdNest : {message.birdNest} </p>

@@ -14,12 +14,12 @@ message Example {
     Extra extra = 5;
     repeated string tags = 6;
     // try embedded message
-    /*
+    
     message Nest {
         string info = 1;
     }
     Nest nest = 7;
-    */
+
 
     // enum
     Cleanliness clean = 8;

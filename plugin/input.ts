@@ -56,7 +56,7 @@ export function editView(schema: Schema, message: DescMessage) {
     // generate all fields for view.
     for (let i = 0; i < message.fields.length; i++) {
         let currentField = message.fields[i]
-        let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
+        let fieldName = `${varName}.${protoCamelCase(currentField.name)}` 
 
         let prefix = ""
         let suffix = ""
@@ -148,32 +148,10 @@ function inputMessageView(message: DescMessage, currentName: string) {
 }
 
 // disgusting funcs that are used to add / remove from an array and make it reactivley render in UI.
-function generateArrayFunctions(fieldName: string, messageName: string, defaultType: string) {
-    // reintroduce below if it doesn't work as intended.
-    //let a = `function push${fieldName}Array() {${messageName}.${fieldName} = ${messageName}.${fieldName}.concat(${defaultType})}\n` 
-    let a = `function push${fieldName}Array() {${messageName}.${fieldName} = ${messageName}.${fieldName}.concat(${defaultType})}\n`
+function generateArrayFunctions(fieldName: string, messageName: string) {
+    let a = `function push${fieldName}Array() {${messageName}.${fieldName} = ${messageName}.${fieldName}.concat(undefined)}\n`
     let b = `function remove${fieldName}Array(index) {${messageName}.${fieldName}.splice(index, 1); ${messageName}.${fieldName} = ${messageName}.${fieldName}}\n`
     return a + b
-}
-
-function defaultRepeatedValue(currentField: DescField) {
-    return "undefined"
-    /*
-    todo remove below if correct.
-    if (currentField.message != null) {
-        return "{"
-    }
-
-    switch (currentField.scalar) {
-        case ScalarType.STRING:
-            return `""`
-        case ScalarType.BOOL:
-            return "false"
-        case ScalarType.INT32 || ScalarType.INT64 || ScalarType.UINT32 || ScalarType.UINT64:
-            return "0"
-    }
-    return ""
-    */
 }
 
 function gatherArrayFunctions(message: DescMessage) {
@@ -181,7 +159,7 @@ function gatherArrayFunctions(message: DescMessage) {
     for (let i = 0; i < message.fields.length; i++) {
         let curr = message.fields[i]
         if (curr.repeated) {
-            let a = generateArrayFunctions(curr.name, "message", defaultRepeatedValue(curr))
+            let a = generateArrayFunctions(curr.name, "message")
             imports.push(a)
         }
     }
@@ -200,7 +178,7 @@ function generateOneofHandlers(desc: DescOneof) {
 
 
     let potentialAddition = `
-    message = new ${desc.parent.name}(); // todo double check template
+    message = new ${desc.parent.name}();
     switch (view) {
         `
 
@@ -211,7 +189,7 @@ function generateOneofHandlers(desc: DescOneof) {
         if (currField.message != undefined) {
             nestedMessageCount++
             potentialAddition += `case "${fieldName}":
-            message.${oneOfVarName}.value = new ${getMessageName(currField.message)}(); // todo get this to include ParentName.
+            message.${oneOfVarName}.value = new ${getMessageName(currField.message)}();
             break;
         default:`
         }

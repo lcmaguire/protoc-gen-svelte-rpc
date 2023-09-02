@@ -1,4 +1,4 @@
-# This template is to generate connect-web artifacts for the Eliza demo.
+# This template is to generate connect-web, proto-es and protoc-gen-svelte code for my demo.
 version: v1
 plugins:
   - plugin: buf.build/bufbuild/es
@@ -11,4 +11,3 @@ plugins:
       - target=ts
     out: my-app/src
     
-

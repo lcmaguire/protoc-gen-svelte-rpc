@@ -11,7 +11,8 @@ plugins:
   - name: connect-go
     out: mocks
     opt: paths=source_relative
-  #- name: go-goo
+  # uses github.com/lcmaguire/protoc-gen-goo-go which generates go boilerplate code.
+  #- name: go-goo # commented out as i manually edited the generated code and don't want to do it again.
   #  out: mocks
   #  opt:
   #  - server=true

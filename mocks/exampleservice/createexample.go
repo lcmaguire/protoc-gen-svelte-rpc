@@ -26,5 +26,5 @@ func (s *ExampleService) CreateExample(ctx context.Context, req *connect_go.Requ
 	})
 	fmt.Println(res.Msg)
 
-	return res, nil // connect_go.NewError(connect_go.CodeUnimplemented, errors.New("not yet implemented"))
+	return res, nil
 }

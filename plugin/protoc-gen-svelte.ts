@@ -32,8 +32,6 @@ function parseOption(key: string, value: string | undefined) {
 }
 
 function generateTs(schema: Schema) {
-  // schema.targets.
-  // for each file
   for (let i = 0; i < schema.files.length; i++) {
     let file = schema.files[i]
 
@@ -107,6 +105,8 @@ function client(schema: Schema, serviceName: string, fileName: string) {
 
 
   import {${serviceName}} from "$lib/gen/${fileName}_connectweb"
+
+  // TODO have a component which edits BaseURL + headers
   let baseURL = "http://localhost:8080"
 const transport = createConnectTransport({
   baseUrl: baseURL,

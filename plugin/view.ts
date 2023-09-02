@@ -45,8 +45,8 @@ export function generateView(schema: Schema, message: DescMessage) {
 
         if (currentField.oneof){
             let oneOfMessage = formatMethodName(messageName)
-            prefix = `{#if message.${oneOfMessage}.case == "${protoCamelCase(currentField.name)}"}`
-            fieldName = `message.${oneOfMessage}.value`
+            prefix = `{#if message.${protoCamelCase(currentField.oneof.name)}.case == "${protoCamelCase(currentField.name)}"}`
+            fieldName = `message.${protoCamelCase(currentField.oneof.name)}.value`
             suffix = "{/if}"
         }
 

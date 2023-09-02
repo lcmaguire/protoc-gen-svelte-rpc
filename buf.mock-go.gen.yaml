@@ -11,11 +11,11 @@ plugins:
   - name: connect-go
     out: mocks
     opt: paths=source_relative
-  - name: go-goo
-    out: mocks
-    opt:
-    - server=true
-    - connectGo=true 
-    - generatedPath=github.com/lcmaguire/protoc-gen-svelte/mocks
+  #- name: go-goo
+  #  out: mocks
+  #  opt:
+  #  - server=true
+  #  - connectGo=true 
+  #  - generatedPath=github.com/lcmaguire/protoc-gen-svelte/mocks
     
 

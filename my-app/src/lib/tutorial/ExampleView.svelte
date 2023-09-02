@@ -53,10 +53,10 @@ if (message == null ) {
 
 
 {#if message.tree.case == "treeType"}
-<p class="message-example.value"> message.example.value : {message.example.value} </p>
+<p class="message-tree.value"> message.tree.value : {message.tree.value} </p>
 
 {/if}
 {#if message.tree.case == "bush"}
-<p class="message-example.value"> message.example.value : {message.example.value}  </p>
+<p class="message-tree.value"> message.tree.value : {message.tree.value}  </p>
 
 {/if}

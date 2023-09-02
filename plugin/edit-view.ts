@@ -72,7 +72,14 @@ export function editView(schema: Schema, message: DescMessage) {
         let prefix = ""
         let suffix = ""
         if (currentField.oneof) {
-            fieldName = `message.${formatMethodName(messageName)}.value`
+            
+            nf.print(`<!-- ${currentField.oneof.name} -->`)
+            nf.print(`<!-- ${formatMethodName(messageName)} -->`)
+            nf.print(`<!-- ${fieldName} -->`)
+            nf.print(`<!-- ${currentField.parent.name} -->`)
+            nf.print(`<!-- ${currentField.declarationString()} -->`)
+            // nf.print(`<!-- ${currentField.} -->`) cosider parent or fullname.
+            fieldName = `message.${protoCamelCase(currentField.oneof.name)}.value`
             prefix = `{#if view == "${protoCamelCase(currentField.name)}"}`
             suffix = "{/if}"
         }

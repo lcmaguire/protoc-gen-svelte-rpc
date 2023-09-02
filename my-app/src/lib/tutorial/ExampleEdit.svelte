@@ -92,11 +92,21 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 <OperatingSystemEdit bind:message={message.os}  />
 
 
+<!-- tree -->
+<!-- example -->
+<!-- message.treeType -->
+<!-- Example -->
+<!-- string tree_type = 11 -->
 {#if view == "treeType"}
-<input class="message-example.value" bind:value={message.tree.value} >
+<input class="message-tree.value" bind:value={message.tree.value} >
 
 {/if}
+<!-- tree -->
+<!-- example -->
+<!-- message.bush -->
+<!-- Example -->
+<!-- bool bush = 12 -->
 {#if view == "bush"}
-<input class="message-example.value" type=checkbox  bind:checked={message.tree.value} >
+<input class="message-tree.value" type=checkbox  bind:checked={message.tree.value} >
 
 {/if}

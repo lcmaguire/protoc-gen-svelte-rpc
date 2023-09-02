@@ -67,8 +67,7 @@ export function editView(schema: Schema, message: DescMessage) {
         let currentField = message.fields[i]
         let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
 
-        // additional html attributes to add into html. Currently used for oneof binding.
-
+        // perhaps oneof radio should be printed here.
         let prefix = ""
         let suffix = ""
         if (currentField.oneof) {
@@ -83,21 +82,17 @@ export function editView(schema: Schema, message: DescMessage) {
     }
 }
 
-// goals get array of message to be of correct type
-// labels 
-// publish
-
 function inputFieldKind(currentField: DescField, fieldName: string) {
     switch (currentField.fieldKind) {
         case "scalar":
-            return `${editScalarView(currentField, fieldName, "")}`
+            return `${editScalarView(currentField, fieldName)}`
         case "enum":
-            return `${editEnumView(currentField, fieldName, "")}`
+            return `${editEnumView(currentField, fieldName)}`
         case "message":
             if (currentField.repeated) {
                 return `
                 {#each ${fieldName} as item, key} 
-                    ${editMessageView(currentField.message, "item", "")}
+                    ${editMessageView(currentField.message, "item")}
                     <button on:click={() => remove${currentField.name}Array(key)}> Remove from ${fieldName}</button>
                 {/each}
                 <button on:click={push${currentField.name}Array}> Add to ${fieldName}</button>
@@ -105,44 +100,44 @@ function inputFieldKind(currentField: DescField, fieldName: string) {
             }
 
 
-            return `${editMessageView(currentField.message, fieldName, "")}`
+            return `${editMessageView(currentField.message, fieldName)}`
     }
     return ""
 }
 
-function editScalarView(currentField: DescField, currentName: string, additionalAtrributes: string) {
+function editScalarView(currentField: DescField, currentName: string) {
     let cssClass = protoPathToCssPath(currentName)
     if (currentField.repeated) {
         return `
         <label for="${cssClass}"> ${currentName} </label>\n
         {#each ${currentName} as item, key} 
-            ${scalarSwitch(currentField, cssClass, "item", additionalAtrributes)}
+            ${scalarSwitch(currentField, cssClass, "item")}
             <button on:click={() => remove${currentField.name}Array(key)}> Remove from ${currentName}</button>
         {/each}
         <button on:click={push${currentField.name}Array}> Add to ${currentName}</button>
         `
     }
 
-    return scalarSwitch(currentField, cssClass, currentName, additionalAtrributes)
+    return scalarSwitch(currentField, cssClass, currentName)
 }
 
-function scalarSwitch(currentField: DescField, cssClass: string, currentName: string, additionalAttributes: string) {
+function scalarSwitch(currentField: DescField, cssClass: string, currentName: string,) {
     switch (currentField.scalar) {
         case ScalarType.STRING:
-            return `<input class="${cssClass}" bind:value={${currentName}} ${additionalAttributes}>\n`
+            return `<input class="${cssClass}" bind:value={${currentName}} >\n`
         case ScalarType.BOOL:
-            return `<input class="${cssClass}" type=checkbox  bind:checked={${currentName}} ${additionalAttributes}>\n`;
+            return `<input class="${cssClass}" type=checkbox  bind:checked={${currentName}} >\n`;
         case ScalarType.INT32: case ScalarType.INT64: case ScalarType.UINT32: case ScalarType.UINT64:
-            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0 step="1"  ${additionalAttributes} >\n `
+            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0 step="1"   >\n `
         case ScalarType.FIXED32: case ScalarType.FIXED64: case ScalarType.SFIXED32: case ScalarType.SFIXED64: case ScalarType.DOUBLE: case ScalarType.FLOAT:
-            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0  ${additionalAttributes} >\n`
+            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0   >\n`
         default:
             return `<!-- ${currentField.scalar}  ${currentName} -->`
     }
 }
 
-function editEnumView(currentField: DescField, currentName: string, additionalAtrributes: string) {
-    let res = `<select bind:value={${currentName}} ${additionalAtrributes}>\n`
+function editEnumView(currentField: DescField, currentName: string) {
+    let res = `<select bind:value={${currentName}} >\n`
     for (let i = 0; i < currentField.enum!.values.length; i++) {
         res += `<option value="${currentField.enum!.values[i].name}">${currentField.enum!.values[i].name}</option>\n`
     }
@@ -150,8 +145,8 @@ function editEnumView(currentField: DescField, currentName: string, additionalAt
     return res
 }
 
-function editMessageView(message: DescMessage, currentName: string, additionalAtrributes: string) {
-    return `<${message.name}Edit bind:message={${currentName}} ${additionalAtrributes} />\n`
+function editMessageView(message: DescMessage, currentName: string) {
+    return `<${message.name}Edit bind:message={${currentName}}  />\n`
 }
 
 // disgusting funcs that are used to add / remove from an array and make it reactivley render in UI.

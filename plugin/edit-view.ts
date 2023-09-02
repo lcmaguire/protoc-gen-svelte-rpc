@@ -1,4 +1,4 @@
-import { DescField, DescMessage, ScalarType } from "@bufbuild/protobuf"
+import { DescField, DescMessage, DescOneof, ScalarType } from "@bufbuild/protobuf"
 import { gatherImportMessages, getMessageImportPath, getMessageName, protoCamelCase, protoPathToCssPath } from "./helpers"
 import { Schema } from "@bufbuild/protoplugin"
 
@@ -38,9 +38,9 @@ export function editView(schema: Schema, message: DescMessage) {
         nf.print(arrayFunctions[i])
     }
 
-    // generate functions for binding oneofs
+    // generate functions for binding oneofs.
     for (let o in message.oneofs) {
-        // todo generate funcs for oneofs
+        nf.print(generateOneofHandlers(message.oneofs[o]))
     }
 
     nf.print("</script>")
@@ -70,21 +70,32 @@ export function editView(schema: Schema, message: DescMessage) {
 
 function editScalarView(currentField: DescField, currentName: string) {
     let cssClass = protoPathToCssPath(currentName)
+    let additionalAtrributes = ""
     if (currentField.repeated) {
         return `
         <label for="${cssClass}"> ${currentName} </label>\n
         {#each ${currentName} as item, key} 
-            ${scalarSwitch(currentField, cssClass, "item")}
+            ${scalarSwitch(currentField, cssClass, "item", additionalAtrributes)}
             <button on:click={() => remove${currentField.name}Array(key)}> Remove from ${currentName}</button>
         {/each}
         <button on:click={push${currentField.name}Array}> Add to ${currentName}</button>
         `
     }
 
-    return scalarSwitch(currentField, cssClass, currentName)
+    if (currentField.oneof) {
+        // on:input={() => handleOperatingSystemOneof("linuxDistro")
+        additionalAtrributes = `on:input={() => handle${currentField.name}Oneof("${currentName}")`
+    }
+    if (currentField.oneof) {
+
+    }
+
+    return scalarSwitch(currentField, cssClass, currentName, "")
 }
 
-function scalarSwitch(currentField: DescField, cssClass: string, currentName: string) {
+function scalarSwitch(currentField: DescField, cssClass: string, currentName: string, additionalAttributes :string) {
+
+
     switch (currentField.scalar) {
         case ScalarType.STRING:
             return `<input class="${cssClass}" bind:value={${currentName}} >\n`
@@ -146,4 +157,25 @@ function gatherArrayFunctions(message: DescMessage) {
         }
     }
     return imports
+}
+
+function generateOneofHandlers(desc: DescOneof){
+    desc.fields
+    let oneOfName = desc.name
+    // TODO see if it is possible to use for loops withing templates as is the case in golang templates. 
+    let res = `
+    function handle${oneOfName}Oneof(input) {
+        message.${oneOfName}.case = input
+        switch (input) {\n`
+
+    for (let f in desc.fields) {
+        let currField = desc.fields[f]
+        res += `case "${currField.name}":
+        message.${oneOfName}.value = message.${currField.name};
+        break;
+        `
+    }
+    res +=`    }
+    }`
+    return res
 }

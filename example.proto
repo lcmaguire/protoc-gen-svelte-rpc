@@ -40,6 +40,8 @@ message Example {
     - oneof 
     - repeated messages + repeated oneofs
     - repeated enums
+
+    nested oneofs
 */
 
 message Extra {

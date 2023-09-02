@@ -84,13 +84,11 @@ function editScalarView(currentField: DescField, currentName: string) {
 
     if (currentField.oneof) {
         // on:input={() => handleOperatingSystemOneof("linuxDistro")
+        // should probably be handleMessageName
         additionalAtrributes = `on:input={() => handle${currentField.name}Oneof("${currentName}")`
     }
-    if (currentField.oneof) {
 
-    }
-
-    return scalarSwitch(currentField, cssClass, currentName, "")
+    return scalarSwitch(currentField, cssClass, currentName, additionalAtrributes)
 }
 
 function scalarSwitch(currentField: DescField, cssClass: string, currentName: string, additionalAttributes :string) {
@@ -98,13 +96,13 @@ function scalarSwitch(currentField: DescField, cssClass: string, currentName: st
 
     switch (currentField.scalar) {
         case ScalarType.STRING:
-            return `<input class="${cssClass}" bind:value={${currentName}} >\n`
+            return `<input class="${cssClass}" bind:value={${currentName}} ${additionalAttributes}>\n`
         case ScalarType.BOOL:
-            return `<input class="${cssClass}" type=checkbox  bind:checked={${currentName}}>\n`;
+            return `<input class="${cssClass}" type=checkbox  bind:checked={${currentName}} ${additionalAttributes}>\n`;
         case ScalarType.INT32: case ScalarType.INT64: case ScalarType.UINT32: case ScalarType.UINT64:
-            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0 step="1" >\n`
+            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0 step="1" ${additionalAttributes}>\n`
         case ScalarType.FIXED32: case ScalarType.FIXED64: case ScalarType.SFIXED32: case ScalarType.SFIXED64: case ScalarType.DOUBLE: case ScalarType.FLOAT:
-            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0 >\n`
+            return `<input class="${cssClass}" type=number bind:value={${currentName}} min=0 ${additionalAttributes}>\n`
         default:
             return `<!-- ${currentField.scalar}  ${currentName} -->`
     }

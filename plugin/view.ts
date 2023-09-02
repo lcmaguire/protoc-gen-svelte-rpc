@@ -11,9 +11,9 @@ export function generateView(schema: Schema, message: DescMessage) {
 
     // generate a view for all nested messages.
     for (let m in message.nestedMessages) {
-      generateView(schema, message.nestedMessages[m])
+        generateView(schema, message.nestedMessages[m])
     }
-    
+
 
     nf.print("<script> // @ts-nocheck")
     let messageImport = getMessageImportPath(message)
@@ -43,7 +43,7 @@ export function generateView(schema: Schema, message: DescMessage) {
         let prefix = ""
         let suffix = ""
 
-        if (currentField.oneof){
+        if (currentField.oneof) {
             let oneOfMessage = formatMethodName(messageName)
             prefix = `{#if message.${protoCamelCase(currentField.oneof.name)}.case == "${protoCamelCase(currentField.name)}"}`
             fieldName = `message.${protoCamelCase(currentField.oneof.name)}.value`
@@ -64,7 +64,7 @@ export function generateView(schema: Schema, message: DescMessage) {
                 break;
             case "message":
                 nf.print(prefix)
-                nf.print(`${getMessageView(currentField.message, fieldName)}`)
+                nf.print(`${getMessageView(currentField.message, currentField, fieldName)}`)
                 nf.print(suffix)
                 break;
         }
@@ -84,7 +84,7 @@ function getScalarView(currentField: DescField, currentName: string) {
     return scalarSwitch(currentField, cssClass, currentName, currentName)
 }
 
-function scalarSwitch(currentField: DescField, cssClass :string , label: string,  currentName: string){
+function scalarSwitch(currentField: DescField, cssClass: string, label: string, currentName: string) {
     switch (currentField.scalar) {
         case ScalarType.STRING:
             return `<p class="${cssClass}"> ${label} : {${currentName}} </p>\n`
@@ -102,6 +102,11 @@ function getEnumView(currentField: DescField, currentName: string) {
     return `<p class="${protoPathToCssPath(currentName)}"> ${currentName} : {${currentName}} </p>\n`
 }
 
-function getMessageView(message: DescMessage, currentName: string) {
+function getMessageView(message: DescMessage, currentField: DescField, currentName: string) {
+    if (currentField.repeated) {
+        return `{#each ${currentName} as item}
+         <${message.name}View message={item} />
+         {/each}`
+    }
     return `<${message.name}View message={${currentName}} />\n`
 }

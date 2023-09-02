@@ -22,6 +22,7 @@ func (s *ExampleService) CreateExample(ctx context.Context, req *connect_go.Requ
 		Nest:        req.Msg.Nest,
 		BirdNest:    req.Msg.BirdNest,
 		Os:          req.Msg.Os,
+		Tree:        req.Msg.Tree,
 	})
 	fmt.Println(res.Msg)
 

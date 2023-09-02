@@ -25,8 +25,9 @@ if (message == null ) {
 
 
 
-<ExtraView message={message.extra} />
-
+{#each message.extra as item}
+         <ExtraView message={item} />
+         {/each}
 
 
 

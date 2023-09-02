@@ -63,9 +63,9 @@ export declare class Example extends Message<Example> {
   count: number;
 
   /**
-   * @generated from field: tutorial.Extra extra = 5;
+   * @generated from field: repeated tutorial.Extra extra = 5;
    */
-  extra?: Extra;
+  extra: Extra[];
 
   /**
    * @generated from field: repeated string tags = 6;

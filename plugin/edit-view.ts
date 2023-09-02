@@ -72,13 +72,6 @@ export function editView(schema: Schema, message: DescMessage) {
         let prefix = ""
         let suffix = ""
         if (currentField.oneof) {
-            
-            nf.print(`<!-- ${currentField.oneof.name} -->`)
-            nf.print(`<!-- ${formatMethodName(messageName)} -->`)
-            nf.print(`<!-- ${fieldName} -->`)
-            nf.print(`<!-- ${currentField.parent.name} -->`)
-            nf.print(`<!-- ${currentField.declarationString()} -->`)
-            // nf.print(`<!-- ${currentField.} -->`) cosider parent or fullname.
             fieldName = `message.${protoCamelCase(currentField.oneof.name)}.value`
             prefix = `{#if view == "${protoCamelCase(currentField.name)}"}`
             suffix = "{/if}"
@@ -90,6 +83,10 @@ export function editView(schema: Schema, message: DescMessage) {
     }
 }
 
+// goals get array of message to be of correct type
+// labels 
+// publish
+
 function inputFieldKind(currentField: DescField, fieldName: string) {
     switch (currentField.fieldKind) {
         case "scalar":
@@ -97,6 +94,17 @@ function inputFieldKind(currentField: DescField, fieldName: string) {
         case "enum":
             return `${editEnumView(currentField, fieldName, "")}`
         case "message":
+            if (currentField.repeated) {
+                return `
+                {#each ${fieldName} as item, key} 
+                    ${editMessageView(currentField.message, "item", "")}
+                    <button on:click={() => remove${currentField.name}Array(key)}> Remove from ${fieldName}</button>
+                {/each}
+                <button on:click={push${currentField.name}Array}> Add to ${fieldName}</button>
+                `
+            }
+
+
             return `${editMessageView(currentField.message, fieldName, "")}`
     }
     return ""
@@ -148,14 +156,19 @@ function editMessageView(message: DescMessage, currentName: string, additionalAt
 
 // disgusting funcs that are used to add / remove from an array and make it reactivley render in UI.
 function generateArrayFunctions(fieldName: string, messageName: string, defaultType: string) {
-    let a = `function push${fieldName}Array() {if (${messageName}.${fieldName} == undefined) {${messageName}.${fieldName} = []};${messageName}.${fieldName} = ${messageName}.${fieldName}.concat(${defaultType})}\n`
+    // reintroduce below if it doesn't work as intended.
+    //let a = `function push${fieldName}Array() {${messageName}.${fieldName} = ${messageName}.${fieldName}.concat(${defaultType})}\n` 
+    let a = `function push${fieldName}Array() {${messageName}.${fieldName} = ${messageName}.${fieldName}.concat(${defaultType})}\n`
     let b = `function remove${fieldName}Array(index) {${messageName}.${fieldName}.splice(index, 1); ${messageName}.${fieldName} = ${messageName}.${fieldName}}\n`
     return a + b
 }
 
 function defaultRepeatedValue(currentField: DescField) {
+    return "undefined"
+    /*
+    todo remove below if correct.
     if (currentField.message != null) {
-        return "{}"
+        return "{"
     }
 
     switch (currentField.scalar) {
@@ -167,6 +180,7 @@ function defaultRepeatedValue(currentField: DescField) {
             return "0"
     }
     return ""
+    */
 }
 
 function gatherArrayFunctions(message: DescMessage) {

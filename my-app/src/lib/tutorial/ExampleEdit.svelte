@@ -1,112 +1,107 @@
-<script> // @ts-nocheck
-import ExtraEdit from '$lib/tutorial/ExtraEdit.svelte'
-import NestEdit from '$lib/tutorial/Example.NestEdit.svelte'
-import OperatingSystemEdit from '$lib/tutorial/OperatingSystemEdit.svelte'
-import {Example} from "$lib/gen/example_pb"
-export let message;
-if (message == null ) {
-    message = new Example ()
-}
-function pushtagsArray() {if (message.tags == undefined) {message.tags = []};message.tags = message.tags.concat("")}
-function removetagsArray(index) {message.tags.splice(index, 1); message.tags = message.tags}
+<script>
+    // @ts-nocheck
+    import ExtraEdit from "$lib/tutorial/ExtraEdit.svelte";
+    import NestEdit from "$lib/tutorial/Example.NestEdit.svelte";
+    import OperatingSystemEdit from "$lib/tutorial/OperatingSystemEdit.svelte";
+    import { Example } from "$lib/gen/example_pb";
+    export let message;
+    if (message == null) {
+        message = new Example();
+    }
+    function pushextraArray() {
+        message.extra = message.extra.concat(undefined);
+    }
+    function removeextraArray(index) {
+        message.extra.splice(index, 1);
+        message.extra = message.extra;
+    }
 
-
+    function pushtagsArray() {
+        message.tags = message.tags.concat(undefined);
+    }
+    function removetagsArray(index) {
+        message.tags.splice(index, 1);
+        message.tags = message.tags;
+    }
 
     // any messages within oneof need to be initialized.
     function setupOneof() {
         message.tree.case = view;
-            message.tree.value = undefined            
+        message.tree.value = undefined;
     }
     let view;
     $: view, setupOneof();
-    
 </script>
+
 <label>
-
     <input type="radio" bind:group={view} value={"treeType"} />
-    
+
     treeType
-    
-    </label><label>
-
+</label><label>
     <input type="radio" bind:group={view} value={"bush"} />
-    
+
     bush
-    
-    </label>
+</label>
 
-<input class="message-name" bind:value={message.name} >
+<input class="message-name" bind:value={message.name} />
 
+<input class="message-displayName" bind:value={message.displayName} />
 
+<input class="message-active" type="checkbox" bind:checked={message.active} />
 
-<input class="message-displayName" bind:value={message.displayName} >
+<input
+    class="message-count"
+    type="number"
+    bind:value={message.count}
+    min="0"
+    step="1"
+/>
 
+{#each message.extra as item, key}
+    <ExtraEdit bind:message={item} />
 
+    <button on:click={() => removeextraArray(key)}>
+        Remove from message.extra</button
+    >
+{/each}
+<button on:click={pushextraArray}> Add to message.extra</button>
 
-<input class="message-active" type=checkbox  bind:checked={message.active} >
+<label for="message-tags"> message.tags </label>
 
+{#each message.tags as item, key}
+    <input class="message-tags" bind:value={item} />
 
+    <button on:click={() => removetagsArray(key)}>
+        Remove from message.tags</button
+    >
+{/each}
+<button on:click={pushtagsArray}> Add to message.tags</button>
 
-<input class="message-count" type=number bind:value={message.count} min=0 step="1"   >
- 
+<NestEdit bind:message={message.nest} />
 
+<select bind:value={message.clean}>
+    <option value="CLEANLINESS_UNSPECIFIED">CLEANLINESS_UNSPECIFIED</option>
+    <option value="CLEANLINESS_DISGUSTING">CLEANLINESS_DISGUSTING</option>
+    <option value="CLEANLINESS_BAD">CLEANLINESS_BAD</option>
+    <option value="CLEANLINESS_GOOD">CLEANLINESS_GOOD</option>
+    <option value="CLEANLINESS_EXCELLENT">CLEANLINESS_EXCELLENT</option>
+</select><br />
 
-<ExtraEdit bind:message={message.extra}  />
+<select bind:value={message.birdNest}>
+    <option value="BIRD_NEST_UNDEFINED">BIRD_NEST_UNDEFINED</option>
+    <option value="BIRD_NEST_DESTROYED">BIRD_NEST_DESTROYED</option>
+    <option value="BIRD_NEST_BUILT">BIRD_NEST_BUILT</option>
+</select><br />
 
+<OperatingSystemEdit bind:message={message.os} />
 
-
-
-        <label for="message-tags"> message.tags </label>
-
-        {#each message.tags as item, key} 
-            <input class="message-tags" bind:value={item} >
-
-            <button on:click={() => removetagsArray(key)}> Remove from message.tags</button>
-        {/each}
-        <button on:click={pushtagsArray}> Add to message.tags</button>
-        
-
-
-<NestEdit bind:message={message.nest}  />
-
-
-
-<select bind:value={message.clean} >
-<option value="CLEANLINESS_UNSPECIFIED">CLEANLINESS_UNSPECIFIED</option>
-<option value="CLEANLINESS_DISGUSTING">CLEANLINESS_DISGUSTING</option>
-<option value="CLEANLINESS_BAD">CLEANLINESS_BAD</option>
-<option value="CLEANLINESS_GOOD">CLEANLINESS_GOOD</option>
-<option value="CLEANLINESS_EXCELLENT">CLEANLINESS_EXCELLENT</option>
-</select><br>
-
-
-
-<select bind:value={message.birdNest} >
-<option value="BIRD_NEST_UNDEFINED">BIRD_NEST_UNDEFINED</option>
-<option value="BIRD_NEST_DESTROYED">BIRD_NEST_DESTROYED</option>
-<option value="BIRD_NEST_BUILT">BIRD_NEST_BUILT</option>
-</select><br>
-
-
-
-<OperatingSystemEdit bind:message={message.os}  />
-
-
-<!-- tree -->
-<!-- example -->
-<!-- message.treeType -->
-<!-- Example -->
-<!-- string tree_type = 11 -->
 {#if view == "treeType"}
-<input class="message-tree.value" bind:value={message.tree.value} >
-
+    <input class="message-tree.value" bind:value={message.tree.value} />
 {/if}
-<!-- tree -->
-<!-- example -->
-<!-- message.bush -->
-<!-- Example -->
-<!-- bool bush = 12 -->
 {#if view == "bush"}
-<input class="message-tree.value" type=checkbox  bind:checked={message.tree.value} >
-
+    <input
+        class="message-tree.value"
+        type="checkbox"
+        bind:checked={message.tree.value}
+    />
 {/if}

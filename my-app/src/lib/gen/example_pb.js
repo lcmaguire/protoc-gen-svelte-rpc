@@ -31,7 +31,7 @@ export const Example = proto3.makeMessageType(
     { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "active", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 4, name: "count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 5, name: "extra", kind: "message", T: Extra },
+    { no: 5, name: "extra", kind: "message", T: Extra, repeated: true },
     { no: 6, name: "tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 7, name: "nest", kind: "message", T: Example_Nest },
     { no: 8, name: "clean", kind: "enum", T: proto3.getEnumType(Cleanliness) },

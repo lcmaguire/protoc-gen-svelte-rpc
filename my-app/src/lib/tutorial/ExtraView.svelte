@@ -5,5 +5,7 @@ if (message == null ) {
       message = new Extra ()
   }
 </script>
+
 <p class="message-more"> message.more : {message.more} </p>
+
 

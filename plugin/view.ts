@@ -1,5 +1,5 @@
 import { DescField, DescMessage, ScalarType } from "@bufbuild/protobuf"
-import { gatherImportMessages, getMessageImportPath, getMessageName, protoCamelCase, protoPathToCssPath } from "./helpers"
+import { formatMethodName, gatherImportMessages, getMessageImportPath, getMessageName, protoCamelCase, protoPathToCssPath } from "./helpers"
 import { Schema } from "@bufbuild/protoplugin"
 
 
@@ -35,21 +35,37 @@ export function generateView(schema: Schema, message: DescMessage) {
 
     nf.print("</script>")
 
-    // todo support repeated fields
-
+    // todo support oneofs
     for (let i = 0; i < message.fields.length; i++) {
         let currentField = message.fields[i]
         let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
 
+        let prefix = ""
+        let suffix = ""
+
+        if (currentField.oneof){
+            let oneOfMessage = formatMethodName(messageName)
+            prefix = `{#if message.${oneOfMessage}.case == "${protoCamelCase(currentField.name)}"}`
+            fieldName = `message.${oneOfMessage}.value`
+            suffix = "{/if}"
+        }
+
+        // todo conver below to func that returns string.
         switch (currentField.fieldKind) {
             case "scalar":
+                nf.print(prefix)
                 nf.print(`${getScalarView(currentField, fieldName)}`)
+                nf.print(suffix)
                 break
             case "enum":
+                nf.print(prefix)
                 nf.print(`${getEnumView(currentField, fieldName)}`)
+                nf.print(suffix)
                 break;
             case "message":
+                nf.print(prefix)
                 nf.print(`${getMessageView(currentField.message, fieldName)}`)
+                nf.print(suffix)
                 break;
         }
     }

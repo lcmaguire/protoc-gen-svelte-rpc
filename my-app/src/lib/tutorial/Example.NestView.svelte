@@ -6,7 +6,6 @@ if (message == null ) {
   }
 </script>
 
-{#if message != undefined}
 <p class="message-info"> message.info : {message.info} </p>
-{/if}
+
 

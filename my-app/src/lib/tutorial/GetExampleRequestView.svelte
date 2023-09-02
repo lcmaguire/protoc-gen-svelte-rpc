@@ -5,5 +5,7 @@ if (message == null ) {
       message = new GetExampleRequest ()
   }
 </script>
+
 <p class="message-name"> message.name : {message.name} </p>
+
 

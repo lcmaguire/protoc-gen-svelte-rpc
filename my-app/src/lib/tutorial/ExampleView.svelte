@@ -8,15 +8,26 @@ if (message == null ) {
       message = new Example ()
   }
 </script>
+
 <p class="message-name"> message.name : {message.name} </p>
+
+
 
 <p class="message-displayName"> message.displayName : {message.displayName} </p>
 
+
+
 <p class="message-active"> message.active : {message.active}  </p>
+
+
 
 <p class="message-count"> message.count : {message.count} </p>
 
+
+
 <ExtraView message={message.extra} />
+
+
 
 
         {#each message.tags as item }
@@ -24,11 +35,20 @@ if (message == null ) {
 
         {/each}
         
+
+
 <NestView message={message.nest} />
+
+
 
 <p class="message-clean"> message.clean : {message.clean} </p>
 
+
+
 <p class="message-birdNest"> message.birdNest : {message.birdNest} </p>
 
+
+
 <OperatingSystemView message={message.os} />
+
 

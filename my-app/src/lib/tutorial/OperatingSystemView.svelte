@@ -5,9 +5,15 @@ if (message == null ) {
       message = new OperatingSystem ()
   }
 </script>
-<p class="message-windowsVersion"> message.windowsVersion : {message.windowsVersion} </p>
+{#if message.operatingSystem.case == "windowsVersion"}
+<p class="message-operatingSystem.value"> message.operatingSystem.value : {message.operatingSystem.value} </p>
 
-<p class="message-macVersion"> message.macVersion : {message.macVersion} </p>
+{/if}
+{#if message.operatingSystem.case == "macVersion"}
+<p class="message-operatingSystem.value"> message.operatingSystem.value : {message.operatingSystem.value} </p>
 
-<p class="message-linuxDistro"> message.linuxDistro : {message.linuxDistro} </p>
+{/if}
+{#if message.operatingSystem.case == "linuxDistro"}
+<p class="message-operatingSystem.value"> message.operatingSystem.value : {message.operatingSystem.value} </p>
 
+{/if}

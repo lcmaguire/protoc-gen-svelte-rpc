@@ -45,6 +45,10 @@ export function editView(schema: Schema, message: DescMessage) {
         let currentField = message.fields[i]
         let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
 
+        if (currentField.oneof) {
+            nf.print("oneof")
+        }
+
         switch (currentField.fieldKind) {
             case "scalar":
                 nf.print(`${editScalarView(currentField, fieldName)}`)

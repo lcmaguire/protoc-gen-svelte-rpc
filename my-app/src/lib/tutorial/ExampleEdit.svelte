@@ -1,6 +1,7 @@
 <script> // @ts-nocheck
 import ExtraEdit from '$lib/tutorial/ExtraEdit.svelte'
 import NestEdit from '$lib/tutorial/Example.NestEdit.svelte'
+import OperatingSystemEdit from '$lib/tutorial/OperatingSystemEdit.svelte'
 import {Example} from "$lib/gen/example_pb"
 export let message;
 if (message == null ) {
@@ -45,4 +46,6 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 <option value="BIRD_NEST_DESTROYED">BIRD_NEST_DESTROYED</option>
 <option value="BIRD_NEST_BUILT">BIRD_NEST_BUILT</option>
 </select><br>
+
+<OperatingSystemEdit bind:message={message.os} />
 

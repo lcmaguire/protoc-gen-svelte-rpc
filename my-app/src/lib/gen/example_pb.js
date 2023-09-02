@@ -36,6 +36,7 @@ export const Example = proto3.makeMessageType(
     { no: 7, name: "nest", kind: "message", T: Example_Nest },
     { no: 8, name: "clean", kind: "enum", T: proto3.getEnumType(Cleanliness) },
     { no: 9, name: "bird_nest", kind: "enum", T: proto3.getEnumType(Example_BirdNest) },
+    { no: 10, name: "os", kind: "message", T: OperatingSystem },
   ],
 );
 
@@ -81,6 +82,18 @@ export const GetExampleRequest = proto3.makeMessageType(
   "tutorial.GetExampleRequest",
   () => [
     { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tutorial.OperatingSystem
+ */
+export const OperatingSystem = proto3.makeMessageType(
+  "tutorial.OperatingSystem",
+  () => [
+    { no: 1, name: "windows_version", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "operating_system" },
+    { no: 2, name: "mac_version", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "operating_system" },
+    { no: 3, name: "linux_distro", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "operating_system" },
   ],
 );
 

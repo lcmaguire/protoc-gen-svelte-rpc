@@ -2,6 +2,7 @@
 import {Example} from "$lib/gen/example_pb"
 import ExtraView from '$lib/tutorial/ExtraView.svelte'
 import NestView from '$lib/tutorial/Example.NestView.svelte'
+import OperatingSystemView from '$lib/tutorial/OperatingSystemView.svelte'
 export let message;
 if (message == null ) {
       message = new Example ()
@@ -28,4 +29,6 @@ if (message == null ) {
 <p class="message-clean"> message.clean : {message.clean} </p>
 
 <p class="message-birdNest"> message.birdNest : {message.birdNest} </p>
+
+<OperatingSystemView message={message.os} />
 

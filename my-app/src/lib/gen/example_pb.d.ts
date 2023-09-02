@@ -91,6 +91,11 @@ export declare class Example extends Message<Example> {
    */
   birdNest: Example_BirdNest;
 
+  /**
+   * @generated from field: tutorial.OperatingSystem os = 10;
+   */
+  os?: OperatingSystem;
+
   constructor(data?: PartialMessage<Example>);
 
   static readonly runtime: typeof proto3;
@@ -198,5 +203,47 @@ export declare class GetExampleRequest extends Message<GetExampleRequest> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetExampleRequest;
 
   static equals(a: GetExampleRequest | PlainMessage<GetExampleRequest> | undefined, b: GetExampleRequest | PlainMessage<GetExampleRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tutorial.OperatingSystem
+ */
+export declare class OperatingSystem extends Message<OperatingSystem> {
+  /**
+   * @generated from oneof tutorial.OperatingSystem.operating_system
+   */
+  operatingSystem: {
+    /**
+     * @generated from field: string windows_version = 1;
+     */
+    value: string;
+    case: "windowsVersion";
+  } | {
+    /**
+     * @generated from field: string mac_version = 2;
+     */
+    value: string;
+    case: "macVersion";
+  } | {
+    /**
+     * @generated from field: string linux_distro = 3;
+     */
+    value: string;
+    case: "linuxDistro";
+  } | { case: undefined; value?: undefined };
+
+  constructor(data?: PartialMessage<OperatingSystem>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tutorial.OperatingSystem";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OperatingSystem;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OperatingSystem;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OperatingSystem;
+
+  static equals(a: OperatingSystem | PlainMessage<OperatingSystem> | undefined, b: OperatingSystem | PlainMessage<OperatingSystem> | undefined): boolean;
 }
 

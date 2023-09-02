@@ -6,10 +6,12 @@ if (message == null ) {
 }
 </script>
 
+<label for="message-distro"> message.distro </label> <br>
 <input class="message-distro" bind:value={message.distro} >
+<br>
 
 
-
+<label for="message-arch"> message.arch </label> <br>
 <input class="message-arch" type=checkbox  bind:checked={message.arch} >
-
+<br>
 

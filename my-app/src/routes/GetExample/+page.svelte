@@ -13,8 +13,8 @@ let response = new Example()
 }
   
 </script>
-Request
-<GetExampleRequestEdit message={request}/> <br> <br>
-<button on:click={makeRequest}> Send Request</button> <br> <br>
-Response <br> <br>
+<h3> Request</h3>
+<GetExampleRequestEdit message={request}/> <br>
+<button on:click={makeRequest}> Send Request</button> <br>
+<h3> Response</h3>
 <ExampleView message={response}/>

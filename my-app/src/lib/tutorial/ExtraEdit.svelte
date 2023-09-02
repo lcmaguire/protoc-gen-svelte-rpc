@@ -6,6 +6,7 @@ if (message == null ) {
 }
 </script>
 
+<label for="message-more"> message.more </label> <br>
 <input class="message-more" bind:value={message.more} >
-
+<br>
 

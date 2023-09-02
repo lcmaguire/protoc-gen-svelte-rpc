@@ -16,63 +16,57 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 
 
     // any messages within oneof need to be initialized.
-    function setupOneof() {
-        message.tree.case = view;
-            message.tree.value = undefined            
+    function setupOneof() {message.tree.value = undefined
+    message.tree.case = view;          
     }
     let view;
     $: view, setupOneof();
     
 </script>
-<label>
 
-    <input type="radio" bind:group={view} value={"treeType"} />
-    
-    treeType
-    
-    </label><label>
-
-    <input type="radio" bind:group={view} value={"bush"} />
-    
-    bush
-    
-    </label>
-
+<label for="message-name"> message.name </label> <br>
 <input class="message-name" bind:value={message.name} >
+<br>
 
 
-
+<label for="message-displayName"> message.displayName </label> <br>
 <input class="message-displayName" bind:value={message.displayName} >
+<br>
 
 
-
+<label for="message-active"> message.active </label> <br>
 <input class="message-active" type=checkbox  bind:checked={message.active} >
+<br>
+
+
+<label for="message-count"> message.count </label> <br>
+<input class="message-count" type=number bind:value={message.count} min=0 step="1" >
+<br>
 
 
 
-<input class="message-count" type=number bind:value={message.count} min=0 step="1"   >
- 
-
-
+                <br>
+                <label for="message-extra"> message.extra </label> <br>
 
                 {#each message.extra as item, key} 
                     <ExtraEdit bind:message={item}  />
 
-                    <button on:click={() => removeextraArray(key)}> Remove from message.extra</button>
+                    <button on:click={() => removeextraArray(key)}> Remove from message.extra</button><br>
                 {/each}
-                <button on:click={pushextraArray}> Add to message.extra</button>
+                <button on:click={pushextraArray}> Add new message.extra</button><br>
                 
 
 
 
-        <label for="message-tags"> message.tags </label>
+        <br>
+        <label for="message-tags"> message.tags </label> <br>
 
         {#each message.tags as item, key} 
             <input class="message-tags" bind:value={item} >
-
-            <button on:click={() => removetagsArray(key)}> Remove from message.tags</button>
+<br>
+            <button on:click={() => removetagsArray(key)}> Remove from message.tags</button> <br>
         {/each}
-        <button on:click={pushtagsArray}> Add to message.tags</button>
+        <button on:click={pushtagsArray}> Add new message.tags</button> <br>
         
 
 
@@ -80,7 +74,8 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 
 
 
-<select bind:value={message.clean} >
+<label for="message-clean-select"> message.clean </label> <br>
+<select class="message-clean-select" bind:value={message.clean} >
 <option value="CLEANLINESS_UNSPECIFIED">CLEANLINESS_UNSPECIFIED</option>
 <option value="CLEANLINESS_DISGUSTING">CLEANLINESS_DISGUSTING</option>
 <option value="CLEANLINESS_BAD">CLEANLINESS_BAD</option>
@@ -90,7 +85,8 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 
 
 
-<select bind:value={message.birdNest} >
+<label for="message-birdNest-select"> message.birdNest </label> <br>
+<select class="message-birdNest-select" bind:value={message.birdNest} >
 <option value="BIRD_NEST_UNDEFINED">BIRD_NEST_UNDEFINED</option>
 <option value="BIRD_NEST_DESTROYED">BIRD_NEST_DESTROYED</option>
 <option value="BIRD_NEST_BUILT">BIRD_NEST_BUILT</option>
@@ -101,11 +97,25 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 <OperatingSystemEdit bind:message={message.os}  />
 
 
+<label>
+
+    use treeType for Example oneof ?
+    <input type="radio" bind:group={view} value={"treeType"} /> <br> <br>
+    
+    </label> 
 {#if view == "treeType"}
+<label for="message-tree.value"> message.tree.value </label> <br>
 <input class="message-tree.value" bind:value={message.tree.value} >
-
+<br>
 {/if}
-{#if view == "bush"}
-<input class="message-tree.value" type=checkbox  bind:checked={message.tree.value} >
+<label>
 
+    use bush for Example oneof ?
+    <input type="radio" bind:group={view} value={"bush"} /> <br> <br>
+    
+    </label> 
+{#if view == "bush"}
+<label for="message-tree.value"> message.tree.value </label> <br>
+<input class="message-tree.value" type=checkbox  bind:checked={message.tree.value} >
+<br>
 {/if}

@@ -10,14 +10,13 @@ import {OperatingSystem_LinuxInfo} from "$lib/gen/example_pb"
 
     // any messages within oneof need to be initialized.
     function setupOneof() {
-        message.operatingSystem.case = view;
-            
     message = new OperatingSystem(); // todo double check template
-    switch (message.operatingSystem.case) {
+    switch (view) {
         case "linuxInfo":
             message.operatingSystem.value = new OperatingSystem_LinuxInfo(); // todo get this to include ParentName.
             break;
-        default:}            
+        default:}
+    message.operatingSystem.case = view;          
     }
     let view;
     $: view, setupOneof();
@@ -25,31 +24,32 @@ import {OperatingSystem_LinuxInfo} from "$lib/gen/example_pb"
 </script>
 <label>
 
-    <input type="radio" bind:group={view} value={"windowsVersion"} />
+    use windowsVersion for OperatingSystem oneof ?
+    <input type="radio" bind:group={view} value={"windowsVersion"} /> <br> <br>
     
-    windowsVersion
-    
-    </label><label>
-
-    <input type="radio" bind:group={view} value={"macVersion"} />
-    
-    macVersion
-    
-    </label><label>
-
-    <input type="radio" bind:group={view} value={"linuxInfo"} />
-    
-    linuxInfo
-    
-    </label>
+    </label> 
 {#if view == "windowsVersion"}
-<input class="message-operatingSystem.value" type=number bind:value={message.operatingSystem.value} min=0 step="1"   >
- 
+<label for="message-operatingSystem.value"> message.operatingSystem.value </label> <br>
+<input class="message-operatingSystem.value" type=number bind:value={message.operatingSystem.value} min=0 step="1" >
+<br>
 {/if}
-{#if view == "macVersion"}
-<input class="message-operatingSystem.value" bind:value={message.operatingSystem.value} >
+<label>
 
+    use macVersion for OperatingSystem oneof ?
+    <input type="radio" bind:group={view} value={"macVersion"} /> <br> <br>
+    
+    </label> 
+{#if view == "macVersion"}
+<label for="message-operatingSystem.value"> message.operatingSystem.value </label> <br>
+<input class="message-operatingSystem.value" bind:value={message.operatingSystem.value} >
+<br>
 {/if}
+<label>
+
+    use linuxInfo for OperatingSystem oneof ?
+    <input type="radio" bind:group={view} value={"linuxInfo"} /> <br> <br>
+    
+    </label> 
 {#if view == "linuxInfo"}
 <LinuxInfoEdit bind:message={message.operatingSystem.value}  />
 

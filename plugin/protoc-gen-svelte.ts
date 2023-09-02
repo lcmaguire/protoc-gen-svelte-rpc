@@ -90,13 +90,13 @@ function generateRoute(schema: Schema, method: DescMethod) {
   nf.print("</script>")
 
   // import request
-  nf.print("Request")
-  nf.print(`<${editComponent} message={request}/> <br> <br>`)
+  nf.print("<h3> Request</h3>")
+  nf.print(`<${editComponent} message={request}/> <br>`)
 
-  nf.print(`<button on:click={makeRequest}> Send Request</button> <br> <br>`)
+  nf.print(`<button on:click={makeRequest}> Send Request</button> <br>`)
 
   // import response
-  nf.print("Response <br> <br>")
+  nf.print("<h3> Response</h3>")
   nf.print(`<${viewComponent} message={response}/>`)
 }
 

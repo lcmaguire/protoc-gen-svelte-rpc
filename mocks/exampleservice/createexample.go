@@ -19,6 +19,7 @@ func (s *ExampleService) CreateExample(ctx context.Context, req *connect_go.Requ
 		Extra:       req.Msg.Extra,
 		Tags:        req.Msg.Tags,
 		Clean:       req.Msg.Clean,
+		Nest:        req.Msg.Nest,
 		BirdNest:    req.Msg.BirdNest,
 		Os:          req.Msg.Os,
 	})

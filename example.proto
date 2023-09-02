@@ -37,8 +37,7 @@ message Example {
 
 /* 
     things to try 
-    - oneof 
-    - repeated messages + repeated oneofs
+    - repeated messages
     - repeated enums
 
     nested oneofs

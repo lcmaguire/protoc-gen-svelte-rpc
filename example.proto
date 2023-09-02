@@ -31,11 +31,15 @@ message Example {
         BIRD_NEST_BUILT = 2;
     }
     BirdNest bird_nest = 9;
+
+    OperatingSystem os = 10;
 }
 
 /* 
     things to try 
     - oneof 
+    - repeated messages + repeated oneofs
+    - repeated enums
 */
 
 message Extra {
@@ -54,3 +58,11 @@ enum Cleanliness {
     CLEANLINESS_GOOD = 3;
     CLEANLINESS_EXCELLENT = 4;
 }
+
+message OperatingSystem {
+    oneof operating_system {
+        string windows_version = 1;
+        string mac_version = 2;
+        string linux_distro = 3;
+    }
+} 

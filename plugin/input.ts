@@ -33,7 +33,7 @@ export function editView(schema: Schema, message: DescMessage) {
     ${varName} = new ${messageName} ()
 }`)
 
-    // print generated arrays
+    // print generated functions for arrays.
     for (let i in arrayFunctions) {
         nf.print(arrayFunctions[i])
     }
@@ -49,11 +49,8 @@ export function editView(schema: Schema, message: DescMessage) {
                 nf.print(messageImport)
             }
         }
-
         nf.print(generateOneofHandlers(message.oneofs[o]))
     }
-
-
     nf.print("</script>")
 
     // generate all fields for view.
@@ -61,7 +58,6 @@ export function editView(schema: Schema, message: DescMessage) {
         let currentField = message.fields[i]
         let fieldName = `${varName}.${protoCamelCase(currentField.name)}` // todo convert to snakeCase
 
-        // perhaps oneof radio should be printed here.
         let prefix = ""
         let suffix = ""
         if (currentField.oneof) {
@@ -76,36 +72,33 @@ export function editView(schema: Schema, message: DescMessage) {
         nf.print(prefix)
         nf.print(inputFieldKind(currentField, fieldName))
         nf.print(suffix)
-
     }
 }
 
 function inputFieldKind(currentField: DescField, fieldName: string) {
     switch (currentField.fieldKind) {
         case "scalar":
-            return `${editScalarView(currentField, fieldName)}`
+            return `${inputScalarView(currentField, fieldName)}`
         case "enum":
-            return `${editEnumView(currentField, fieldName)}`
+            return `${inputEnumView(currentField, fieldName)}`
         case "message":
             if (currentField.repeated) {
                 return `
                 <br>
                 <label for="${protoPathToCssPath(fieldName)}"> ${fieldName} </label> <br>\n
                 {#each ${fieldName} as item, key} 
-                    ${editMessageView(currentField.message, "item")}
+                    ${inputMessageView(currentField.message, "item")}
                     <button on:click={() => remove${currentField.name}Array(key)}> Remove from ${fieldName}</button><br>
                 {/each}
                 <button on:click={push${currentField.name}Array}> Add new ${fieldName}</button><br>
                 `
             }
-
-
-            return `${editMessageView(currentField.message, fieldName)}`
+            return `${inputMessageView(currentField.message, fieldName)}`
     }
     return ""
 }
 
-function editScalarView(currentField: DescField, currentName: string) {
+function inputScalarView(currentField: DescField, currentName: string) {
     let cssClass = protoPathToCssPath(currentName)
     if (currentField.repeated) { // todo have repeated be handled for all field kinds in one func.
         return `
@@ -115,14 +108,11 @@ function editScalarView(currentField: DescField, currentName: string) {
             ${scalarSwitch(currentField, cssClass, "item")}
             <button on:click={() => remove${currentField.name}Array(key)}> Remove from ${currentName}</button> <br>
         {/each}
-        <button on:click={push${currentField.name}Array}> Add new ${currentName}</button> <br>
-        `
+        <button on:click={push${currentField.name}Array}> Add new ${currentName}</button> <br>`
     }
 
-    let res = `<label for="${cssClass}"> ${currentName} </label> <br>\n`+ scalarSwitch(currentField, cssClass, currentName)
-
-
-    return res //scalarSwitch(currentField, cssClass, currentName)
+    let res = `<label for="${cssClass}"> ${currentName} </label> <br>\n` + scalarSwitch(currentField, cssClass, currentName)
+    return res
 }
 
 function scalarSwitch(currentField: DescField, cssClass: string, currentName: string,) {
@@ -141,7 +131,7 @@ function scalarSwitch(currentField: DescField, cssClass: string, currentName: st
 }
 
 // todo support repeated enums.
-function editEnumView(currentField: DescField, currentName: string) {
+function inputEnumView(currentField: DescField, currentName: string) {
     let cssClass = protoPathToCssPath(currentName)
     let res = `<label for="${cssClass}-select"> ${currentName} </label> <br>\n`
 
@@ -153,7 +143,7 @@ function editEnumView(currentField: DescField, currentName: string) {
     return res
 }
 
-function editMessageView(message: DescMessage, currentName: string) {
+function inputMessageView(message: DescMessage, currentName: string) {
     return `<${message.name}Edit bind:message={${currentName}}  />\n`
 }
 

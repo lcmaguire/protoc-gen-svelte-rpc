@@ -9,6 +9,7 @@ let response = new Example()
   async function makeRequest() {
     console.log(request)
     response = await ExampleServiceClient.createExample(request)
+    console.log(response)
 }
   
 </script>

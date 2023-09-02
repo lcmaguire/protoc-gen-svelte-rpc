@@ -151,7 +151,7 @@ function gatherArrayFunctions(message: DescMessage) {
 
 function generateOneofHandlers(desc: DescOneof) {
     let handleFuncName = desc.parent.name // this is the value which the field implementing it gets. format CapitalizedSnakeCase: 
-    let oneOfVarName = desc.name // this is the format the generated class uses format snakeCase
+    let oneOfVarName = protoCamelCase(desc.name) // this is the format the generated class uses format snakeCase
 
     // TODO see if it is possible to use for loops withing templates as is the case in golang templates. 
     let res = `

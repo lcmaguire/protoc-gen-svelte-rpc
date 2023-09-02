@@ -5,5 +5,8 @@ if (message == null ) {
       message = new Example_Nest ()
   }
 </script>
+
+{#if message != undefined}
 <p class="message-info"> message.info : {message.info} </p>
+{/if}
 

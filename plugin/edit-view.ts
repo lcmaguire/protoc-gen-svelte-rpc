@@ -38,6 +38,11 @@ export function editView(schema: Schema, message: DescMessage) {
         nf.print(arrayFunctions[i])
     }
 
+    // generate functions for binding oneofs
+    for (let o in message.oneofs) {
+        // todo generate funcs for oneofs
+    }
+
     nf.print("</script>")
 
     // generate all fields for view.

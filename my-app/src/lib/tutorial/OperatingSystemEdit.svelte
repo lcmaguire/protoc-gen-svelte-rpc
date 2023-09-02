@@ -6,16 +6,16 @@ if (message == null ) {
 }
 
     function handleOperatingSystemOneof(input) {
-        message.OperatingSystem.case = input
+        message.operating_system.case = input
         switch (input) {
 case "windowsVersion":
-        message.OperatingSystem.value = message.windowsVersion;
+        message.operating_system.value = message.windowsVersion;
         break;
         case "macVersion":
-        message.OperatingSystem.value = message.macVersion;
+        message.operating_system.value = message.macVersion;
         break;
         case "linuxDistro":
-        message.OperatingSystem.value = message.linuxDistro;
+        message.operating_system.value = message.linuxDistro;
         break;
             }
     }

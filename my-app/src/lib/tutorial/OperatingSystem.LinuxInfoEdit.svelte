@@ -9,3 +9,7 @@ if (message == null ) {
 <input class="message-distro" bind:value={message.distro} >
 
 
+
+<input class="message-arch" type=checkbox  bind:checked={message.arch} >
+
+

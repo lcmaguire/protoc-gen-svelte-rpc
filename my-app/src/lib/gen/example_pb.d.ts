@@ -96,6 +96,23 @@ export declare class Example extends Message<Example> {
    */
   os?: OperatingSystem;
 
+  /**
+   * @generated from oneof tutorial.Example.tree
+   */
+  tree: {
+    /**
+     * @generated from field: string tree_type = 11;
+     */
+    value: string;
+    case: "treeType";
+  } | {
+    /**
+     * @generated from field: bool bush = 12;
+     */
+    value: boolean;
+    case: "bush";
+  } | { case: undefined; value?: undefined };
+
   constructor(data?: PartialMessage<Example>);
 
   static readonly runtime: typeof proto3;
@@ -208,6 +225,8 @@ export declare class GetExampleRequest extends Message<GetExampleRequest> {
 }
 
 /**
+ * external oneof with nested message
+ *
  * @generated from message tutorial.OperatingSystem
  */
 export declare class OperatingSystem extends Message<OperatingSystem> {
@@ -257,6 +276,11 @@ export declare class OperatingSystem_LinuxInfo extends Message<OperatingSystem_L
    * @generated from field: string distro = 1;
    */
   distro: string;
+
+  /**
+   * @generated from field: bool arch = 2;
+   */
+  arch: boolean;
 
   constructor(data?: PartialMessage<OperatingSystem_LinuxInfo>);
 

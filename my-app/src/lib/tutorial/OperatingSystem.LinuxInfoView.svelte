@@ -9,3 +9,7 @@ if (message == null ) {
 <p class="message-distro"> message.distro : {message.distro} </p>
 
 
+
+<p class="message-arch"> message.arch : {message.arch}  </p>
+
+

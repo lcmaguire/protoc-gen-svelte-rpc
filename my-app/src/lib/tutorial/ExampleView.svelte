@@ -52,3 +52,11 @@ if (message == null ) {
 <OperatingSystemView message={message.os} />
 
 
+{#if message.tree.case == "treeType"}
+<p class="message-example.value"> message.example.value : {message.example.value} </p>
+
+{/if}
+{#if message.tree.case == "bush"}
+<p class="message-example.value"> message.example.value : {message.example.value}  </p>
+
+{/if}

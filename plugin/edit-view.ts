@@ -182,19 +182,22 @@ function generateOneofHandlers(desc: DescOneof) {
 
     // any messages within oneof need to be initialized.
     function setupOneof() {
-        message = new ${desc.parent.name}(); // todo double check template
         message.${oneOfVarName}.case = view;
-        switch (message.${oneOfVarName}.case) {
             `
 
 
+    let potentialAddition = `
+    message = new ${desc.parent.name}(); // todo double check template
+    switch (message.${oneOfVarName}.case) {
+        `
 
-
+    let nestedMessageCount = 0;
     for (let f in desc.fields) {
         let currField = desc.fields[f]
         let fieldName = protoCamelCase(currField.name)
         if (currField.message != undefined) {
-            res += `case "${fieldName}":
+            nestedMessageCount++
+            potentialAddition += `case "${fieldName}":
             message.${oneOfVarName}.value = new ${getMessageName(currField.message)}(); // todo get this to include ParentName.
             break;
         default:`
@@ -202,8 +205,13 @@ function generateOneofHandlers(desc: DescOneof) {
 
     }
 
+    if (nestedMessageCount > 0) {
+        res +=potentialAddition + "}"
+    } else {
+        res += `message.${oneOfVarName}.value = undefined`
+    }
+
     res += `            
-        }
     }
     let view;
     $: view, setupOneof();

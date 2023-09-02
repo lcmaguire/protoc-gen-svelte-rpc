@@ -10,14 +10,14 @@ import {OperatingSystem_LinuxInfo} from "$lib/gen/example_pb"
 
     // any messages within oneof need to be initialized.
     function setupOneof() {
-        message = new OperatingSystem(); // todo double check template
         message.operatingSystem.case = view;
-        switch (message.operatingSystem.case) {
-            case "linuxInfo":
+            
+    message = new OperatingSystem(); // todo double check template
+    switch (message.operatingSystem.case) {
+        case "linuxInfo":
             message.operatingSystem.value = new OperatingSystem_LinuxInfo(); // todo get this to include ParentName.
             break;
-        default:            
-        }
+        default:}            
     }
     let view;
     $: view, setupOneof();

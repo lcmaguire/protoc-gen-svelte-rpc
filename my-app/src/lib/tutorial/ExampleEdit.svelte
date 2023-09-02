@@ -10,7 +10,30 @@ if (message == null ) {
 function pushtagsArray() {if (message.tags == undefined) {message.tags = []};message.tags = message.tags.concat("")}
 function removetagsArray(index) {message.tags.splice(index, 1); message.tags = message.tags}
 
+
+
+    // any messages within oneof need to be initialized.
+    function setupOneof() {
+        message.tree.case = view;
+            message.tree.value = undefined            
+    }
+    let view;
+    $: view, setupOneof();
+    
 </script>
+<label>
+
+    <input type="radio" bind:group={view} value={"treeType"} />
+    
+    treeType
+    
+    </label><label>
+
+    <input type="radio" bind:group={view} value={"bush"} />
+    
+    bush
+    
+    </label>
 
 <input class="message-name" bind:value={message.name} >
 
@@ -69,3 +92,11 @@ function removetagsArray(index) {message.tags.splice(index, 1); message.tags = m
 <OperatingSystemEdit bind:message={message.os}  />
 
 
+{#if view == "treeType"}
+<input class="message-example.value" bind:value={message.tree.value} >
+
+{/if}
+{#if view == "bush"}
+<input class="message-example.value" type=checkbox  bind:checked={message.tree.value} >
+
+{/if}

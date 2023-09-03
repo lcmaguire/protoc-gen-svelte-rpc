@@ -10,10 +10,6 @@ will generate
 - svelte route/+page.svelte file for all methods (viewable at /{{MethodName}})
 
 
-supports 
-- scalar types
-- 
-
 | fieldKind | supported          | Repeated           | nested             |
 | --------- | ------------------ | ------------------ | ------------------ |
 | scalar    | :white_check_mark: | :white_check_mark: | :white_check_mark: |

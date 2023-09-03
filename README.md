@@ -9,6 +9,7 @@ will generate
 - svelte component for all methods in a proto file
 - svelte route/+page.svelte file for all methods (viewable at /{{MethodName}})
 
+## Supported features
 
 | fieldKind | supported          | Repeated           | nested             |
 | --------- | ------------------ | ------------------ | ------------------ |

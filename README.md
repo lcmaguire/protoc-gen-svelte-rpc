@@ -1,13 +1,17 @@
 # protoc-gen-svelte-rpc
 
 
-work in progress
+work in progress. Intended to be used with a server that supports connect protocol.
+
+relies upon 
+- connect-web
+- connect-es
 
 will generate 
 
 - svelte components for all messages in a proto file (input + view components).
 - svelte component for all methods in a proto file
-- svelte route/+page.svelte file for all methods (viewable at /{{MethodName}})
+- svelte `route/+page.svelte` file for all methods (viewable in svelte app at `/{{MethodName}}`)
 
 ## Supported features
 

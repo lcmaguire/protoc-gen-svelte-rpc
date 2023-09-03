@@ -1,6 +1,7 @@
 import { DescField, DescMessage, ScalarType } from "@bufbuild/protobuf"
 import { formatMethodName, gatherImportMessages, getMessageImportPath, getMessageName, protoCamelCase, protoPathToCssPath } from "./helpers"
 import { Schema } from "@bufbuild/protoplugin"
+import { genMessage, genMessageJScomment } from "./protoc-gen-svelte-rpc"
 
 
 export function generateView(schema: Schema, message: DescMessage) {
@@ -16,6 +17,8 @@ export function generateView(schema: Schema, message: DescMessage) {
 
 
     nf.print("<script> // @ts-nocheck")
+    nf.print(genMessageJScomment)
+
     let messageImport = getMessageImportPath(message)
     nf.print(messageImport)
 
@@ -34,6 +37,7 @@ export function generateView(schema: Schema, message: DescMessage) {
 
 
     nf.print("</script>")
+    nf.print(genMessage)
 
     // todo support oneofs
     for (let i = 0; i < message.fields.length; i++) {

@@ -1,10 +1,11 @@
 import { DescField, DescMessage, DescOneof, ScalarType } from "@bufbuild/protobuf"
 import { formatMethodName, gatherImportMessages, getMessageImportPath, getMessageName, protoCamelCase, protoPathToCssPath } from "./helpers"
 import { Schema } from "@bufbuild/protoplugin"
+import { genMessage, genMessageJScomment } from "./protoc-gen-svelte-rpc"
 
 export function editView(schema: Schema, message: DescMessage) {
     let nf = schema.generateFile(`lib/${message.typeName.replace(".", "/")}Edit.svelte`)
-
+    
     // gather imports
     let imports = gatherImportMessages(message, "Edit")
 
@@ -17,6 +18,7 @@ export function editView(schema: Schema, message: DescMessage) {
     let arrayFunctions = gatherArrayFunctions(message)
 
     nf.print("<script> // @ts-nocheck")
+    nf.print(genMessageJScomment)
     let messageName = getMessageName(message)
 
     // print imports
@@ -52,6 +54,8 @@ export function editView(schema: Schema, message: DescMessage) {
         nf.print(generateOneofHandlers(message.oneofs[o]))
     }
     nf.print("</script>")
+    nf.print(genMessage)
+    
 
     // generate all fields for view.
     for (let i = 0; i < message.fields.length; i++) {

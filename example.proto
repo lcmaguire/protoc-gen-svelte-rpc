@@ -42,9 +42,11 @@ message Example {
 }
 
 /* 
-    things to try 
-    - repeated messages
+    things to implements 
     - repeated enums
+
+    things to try
+    - more wacky oneof / nested message scenarios.
 */
 
 message Extra {

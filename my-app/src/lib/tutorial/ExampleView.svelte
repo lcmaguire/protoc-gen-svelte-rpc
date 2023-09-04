@@ -33,8 +33,8 @@ if (message == null ) {
 
 
 
-        {#each message.tags as item }
-            <p class="message-tags"> message.tags : {item} </p>
+        {#each message.tagsCategory as item }
+            <p class="message-tagsCategory"> message.tagsCategory : {item} </p>
 
         {/each}
         

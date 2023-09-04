@@ -65,12 +65,11 @@ export function editView(schema: Schema, message: DescMessage) {
         let prefix = ""
         let suffix = ""
         if (currentField.oneof) {
-            for (let o in message.oneofs) {
-                let rad = generateOneOfFieldRadio(currentField)
-                nf.print(rad)
-            }
+            let rad = generateOneOfFieldRadio(currentField)
+            nf.print(rad)
+
             fieldName = `message.${protoCamelCase(currentField.oneof.name)}.value`
-            prefix = `{#if view == "${protoCamelCase(currentField.name)}"}`
+            prefix = `{#if ${currentField.oneof.name}view == "${protoCamelCase(currentField.name)}"}`
             suffix = "{/if}"
         }
         nf.print(prefix)
@@ -90,11 +89,11 @@ function inputFieldKind(currentField: DescField, fieldName: string) {
                 return `
                 <br>
                 <label for="${protoPathToCssPath(fieldName)}"> ${fieldName} </label> <br>\n
-                {#each ${fieldName} as item, key} 
+                {#each ${protoCamelCase(fieldName)} as item, key} 
                     ${inputMessageView(currentField.message, "item")}
-                    <button on:click={() => remove${currentField.name}Array(key)}> Remove from ${fieldName}</button><br>
+                    <button on:click={() => remove${protoCamelCase(currentField.name)}Array(key)}> Remove from ${fieldName}</button><br>
                 {/each}
-                <button on:click={push${currentField.name}Array}> Add new ${fieldName}</button><br>
+                <button on:click={push${protoCamelCase(currentField.name)}Array}> Add new ${fieldName}</button><br>
                 `
             }
             return `${inputMessageView(currentField.message, fieldName)}`
@@ -110,9 +109,9 @@ function inputScalarView(currentField: DescField, currentName: string) {
         <label for="${cssClass}"> ${currentName} </label> <br>\n
         {#each ${currentName} as item, key} 
             ${scalarSwitch(currentField, cssClass, "item")}
-            <button on:click={() => remove${currentField.name}Array(key)}> Remove from ${currentName}</button> <br>
+            <button on:click={() => remove${protoCamelCase(currentField.name)}Array(key)}> Remove from ${currentName}</button> <br>
         {/each}
-        <button on:click={push${currentField.name}Array}> Add new ${currentName}</button> <br>`
+        <button on:click={push${protoCamelCase(currentField.name)}Array}> Add new ${currentName}</button> <br>`
     }
 
     let res = `<label for="${cssClass}"> ${currentName} </label> <br>\n` + scalarSwitch(currentField, cssClass, currentName)
@@ -153,6 +152,7 @@ function inputMessageView(message: DescMessage, currentName: string) {
 
 // disgusting funcs that are used to add / remove from an array and make it reactivley render in UI.
 function generateArrayFunctions(fieldName: string, messageName: string) {
+    fieldName = protoCamelCase(fieldName)
     let a = `function push${fieldName}Array() {${messageName}.${fieldName} = ${messageName}.${fieldName}.concat(undefined)}\n`
     let b = `function remove${fieldName}Array(index) {${messageName}.${fieldName}.splice(index, 1); ${messageName}.${fieldName} = ${messageName}.${fieldName}}\n`
     return a + b
@@ -178,12 +178,12 @@ function generateOneofHandlers(desc: DescOneof) {
     let res = `
 
     // any messages within oneof need to be initialized.
-    function setupOneof() {`
+    function setup${desc.name}Oneof() {`
 
 
     let potentialAddition = `
-    message = new ${desc.parent.name}();
-    switch (view) {
+    // message = new ${desc.parent.name}();
+    switch (${desc.name}view) {
         `
 
     let nestedMessageCount = 0;
@@ -207,10 +207,10 @@ function generateOneofHandlers(desc: DescOneof) {
     }
 
     res += `
-    message.${oneOfVarName}.case = view;          
+    message.${oneOfVarName}.case = ${desc.name}view;          
     }
-    let view;
-    $: view, setupOneof();
+    let ${desc.name}view;
+    $: ${desc.name}view, setup${desc.name}Oneof();
     `
     return res
 }
@@ -220,7 +220,7 @@ function generateOneOfFieldRadio(fieldDesc: DescField) {
     return `<label>
 
     use ${fieldName} for ${fieldDesc.parent.name} oneof ?
-    <input type="radio" bind:group={view} value={"${fieldName}"} /> <br> <br>
+    <input type="radio" bind:group={${fieldDesc.oneof?.name}view} value={"${fieldName}"} /> <br>
     
     </label> `
 }

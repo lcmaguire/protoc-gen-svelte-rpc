@@ -12,7 +12,7 @@ message Example {
     bool active = 3;
     int32 count = 4;
     repeated Extra extra = 5;
-    repeated string tags = 6;
+    repeated string tags_category = 6;
     
     // embedded message
     message Nest {

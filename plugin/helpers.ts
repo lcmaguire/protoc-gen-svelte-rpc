@@ -61,7 +61,11 @@ export function gatherImportMessages(message: DescMessage, viewSuffix :string) {
             imports.push(a)
         }
     }
-    return imports
+
+    let uniqueImports = imports.filter((value, index , arr) =>{
+        return arr.indexOf(value) == index
+    })
+    return uniqueImports
 }
 
 export function getMessageName(message: DescMessage){

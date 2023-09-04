@@ -68,9 +68,9 @@ export declare class Example extends Message<Example> {
   extra: Extra[];
 
   /**
-   * @generated from field: repeated string tags = 6;
+   * @generated from field: repeated string tags_category = 6;
    */
-  tags: string[];
+  tagsCategory: string[];
 
   /**
    * @generated from field: tutorial.Example.Nest nest = 7;

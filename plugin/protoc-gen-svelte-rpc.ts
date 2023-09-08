@@ -120,7 +120,7 @@ function client(schema: Schema, serviceName: string, fileName: string) {
   import { createPromiseClient } from "@connectrpc/connect";
 
 
-  import {${serviceName}} from "$lib/gen/${fileName}_connectweb"
+  import {${serviceName}} from "$lib/gen/${fileName}_connect" // todo confirm this is correct
 
   // TODO have a component which edits BaseURL + headers
   let baseURL = "http://localhost:8080"

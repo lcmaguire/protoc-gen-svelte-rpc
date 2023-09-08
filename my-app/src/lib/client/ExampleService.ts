@@ -4,7 +4,7 @@
   import { createPromiseClient } from "@connectrpc/connect";
 
 
-  import {ExampleService} from "$lib/gen/example_connectweb"
+  import {ExampleService} from "$lib/gen/example_connect" // todo confirm this is correct
 
   // TODO have a component which edits BaseURL + headers
   let baseURL = "http://localhost:8080"

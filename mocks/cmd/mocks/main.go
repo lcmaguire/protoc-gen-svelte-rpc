@@ -7,7 +7,6 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	grpcreflect "github.com/bufbuild/connect-grpcreflect-go"
 	"github.com/rs/cors"
 
 	// your protoPathHere
@@ -20,12 +19,14 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	reflector := grpcreflect.NewStaticReflector(
-		"tutorial.ExampleService",
-	)
+	/*
+		reflector := grpcreflect.NewStaticReflector(
+			"tutorial.ExampleService",
+		)
 
-	mux.Handle(grpcreflect.NewHandlerV1(reflector))
-	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
+		mux.Handle(grpcreflect.NewHandlerV1(reflector))
+		mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
+	*/
 
 	// The generated constructors return a path and a plain net/http
 	// handler.

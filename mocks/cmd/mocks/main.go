@@ -18,27 +18,14 @@ import (
 
 func main() {
 	mux := http.NewServeMux()
-
-	/*
-		reflector := grpcreflect.NewStaticReflector(
-			"tutorial.ExampleService",
-		)
-
-		mux.Handle(grpcreflect.NewHandlerV1(reflector))
-		mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
-	*/
-
-	// The generated constructors return a path and a plain net/http
-	// handler.
-
 	mux.Handle(mocksconnect.NewExampleServiceHandler(&exampleservice.ExampleService{}))
 
 	err := http.ListenAndServe(
 		"localhost:8080",
 		// For gRPC clients, it's convenient to support HTTP/2 without TLS. You can
 		// avoid x/net/http2 by using http.ListenAndServeTLS.
-		//h2c.NewHandler(newCORS().Handler(mux), &http2.Server{}),
-		h2c.NewHandler(mux, &http2.Server{}),
+		h2c.NewHandler(newCORS().Handler(mux), &http2.Server{}),
+		//h2c.NewHandler(mux, &http2.Server{}),
 	)
 	log.Fatalf("listen failed: " + err.Error())
 }

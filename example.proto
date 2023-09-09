@@ -6,6 +6,7 @@ service ExampleService {
     rpc GetExample(GetExampleRequest) returns (Example);
 }
 
+// TODO change this to test out different exaxmples.
 message Example {
     string name = 1;
     string display_name = 2;

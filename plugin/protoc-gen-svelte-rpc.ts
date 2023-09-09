@@ -120,8 +120,7 @@ function client(schema: Schema, serviceName: string, fileName: string) {
   import { createPromiseClient } from "@connectrpc/connect";
 
 
-  import {${serviceName}} from "$lib/gen/${fileName}_connect" // todo confirm this is correct
-
+  import {${serviceName}} from "$lib/gen/${fileName}_connect"
   // TODO have a component which edits BaseURL + headers
   let baseURL = "http://localhost:8080"
 const transport = createConnectTransport({
@@ -132,4 +131,9 @@ export const ${serviceName}Client = createPromiseClient(${serviceName}, transpor
   let nf = schema.generateFile(`lib/client/${serviceName}.ts`)
   nf.print(client)
 
+}
+
+// purpose is to generate a component that will allow headers to be altered for requests.
+function headerComponent(schema: Schema) {
+  
 }

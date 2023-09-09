@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Example, GetExampleRequest } from "./example_pb.js";
+import { Example } from "./example_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -18,15 +18,6 @@ export declare const ExampleService: {
     readonly createExample: {
       readonly name: "CreateExample",
       readonly I: typeof Example,
-      readonly O: typeof Example,
-      readonly kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc tutorial.ExampleService.GetExample
-     */
-    readonly getExample: {
-      readonly name: "GetExample",
-      readonly I: typeof GetExampleRequest,
       readonly O: typeof Example,
       readonly kind: MethodKind.Unary,
     },

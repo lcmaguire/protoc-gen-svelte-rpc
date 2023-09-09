@@ -45,71 +45,43 @@ export declare enum Cleanliness {
  */
 export declare class Example extends Message<Example> {
   /**
-   * @generated from field: string name = 1;
+   * message view.
+   *
+   * @generated from field: tutorial.Extra extra = 1;
    */
-  name: string;
+  extra?: Extra;
 
   /**
-   * @generated from field: string display_name = 2;
-   */
-  displayName: string;
-
-  /**
-   * @generated from field: bool active = 3;
-   */
-  active: boolean;
-
-  /**
-   * @generated from field: int32 count = 4;
-   */
-  count: number;
-
-  /**
-   * @generated from field: repeated tutorial.Extra extra = 5;
-   */
-  extra: Extra[];
-
-  /**
-   * @generated from field: repeated string tags_category = 6;
-   */
-  tagsCategory: string[];
-
-  /**
-   * @generated from field: tutorial.Example.Nest nest = 7;
+   * @generated from field: tutorial.Example.Nest nest = 2;
    */
   nest?: Example_Nest;
 
   /**
-   * enum
-   *
-   * @generated from field: tutorial.Cleanliness clean = 8;
-   */
-  clean: Cleanliness;
-
-  /**
-   * @generated from field: tutorial.Example.BirdNest bird_nest = 9;
+   * @generated from field: tutorial.Example.BirdNest bird_nest = 3;
    */
   birdNest: Example_BirdNest;
 
   /**
    * message with oneof
    *
-   * @generated from field: tutorial.OperatingSystem os = 10;
+   * @generated from field: tutorial.OperatingSystem os = 4;
    */
   os?: OperatingSystem;
 
   /**
+   * embedded enum
+   *
    * @generated from oneof tutorial.Example.tree
    */
   tree: {
     /**
-     * @generated from field: string tree_type = 11;
+     * @generated from field: string tree_type = 5;
      */
     value: string;
     case: "treeType";
   } | {
     /**
-     * @generated from field: bool bush = 12;
+     * @generated from field: bool bush = 6;
      */
     value: boolean;
     case: "bush";
@@ -153,7 +125,7 @@ export declare enum Example_BirdNest {
 }
 
 /**
- * embedded message
+ * nested view
  *
  * @generated from message tutorial.Example.Nest
  */
@@ -162,6 +134,25 @@ export declare class Example_Nest extends Message<Example_Nest> {
    * @generated from field: string info = 1;
    */
   info: string;
+
+  /**
+   * @generated from field: bool active = 2;
+   */
+  active: boolean;
+
+  /**
+   * repeated scalar type
+   *
+   * @generated from field: repeated string tags_category = 3;
+   */
+  tagsCategory: string[];
+
+  /**
+   * enum
+   *
+   * @generated from field: tutorial.Cleanliness clean = 4;
+   */
+  clean: Cleanliness;
 
   constructor(data?: PartialMessage<Example_Nest>);
 
@@ -183,9 +174,18 @@ export declare class Example_Nest extends Message<Example_Nest> {
  */
 export declare class Extra extends Message<Extra> {
   /**
+   * string scalar type
+   *
    * @generated from field: string more = 1;
    */
   more: string;
+
+  /**
+   * number scalar type
+   *
+   * @generated from field: int32 count = 2;
+   */
+  count: number;
 
   constructor(data?: PartialMessage<Extra>);
 
@@ -200,30 +200,6 @@ export declare class Extra extends Message<Extra> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Extra;
 
   static equals(a: Extra | PlainMessage<Extra> | undefined, b: Extra | PlainMessage<Extra> | undefined): boolean;
-}
-
-/**
- * @generated from message tutorial.GetExampleRequest
- */
-export declare class GetExampleRequest extends Message<GetExampleRequest> {
-  /**
-   * @generated from field: string name = 1;
-   */
-  name: string;
-
-  constructor(data?: PartialMessage<GetExampleRequest>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tutorial.GetExampleRequest";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetExampleRequest;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetExampleRequest;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetExampleRequest;
-
-  static equals(a: GetExampleRequest | PlainMessage<GetExampleRequest> | undefined, b: GetExampleRequest | PlainMessage<GetExampleRequest> | undefined): boolean;
 }
 
 /**

@@ -3,27 +3,25 @@ package tutorial;
 
 service ExampleService {
     rpc CreateExample(Example) returns (Example);
-    rpc GetExample(GetExampleRequest) returns (Example);
 }
 
 // TODO change this to test out different exaxmples.
 message Example {
-    string name = 1;
-    string display_name = 2;
-    bool active = 3;
-    int32 count = 4;
-    repeated Extra extra = 5;
-    repeated string tags_category = 6;
-    
-    // embedded message
+    // message view.
+    Extra extra = 1;
+
+    // nested view
     message Nest {
         string info = 1;
+        bool active = 2;
+        // repeated scalar type
+        repeated string tags_category = 3;
+
+        // enum
+        Cleanliness clean = 4;
     }
-    Nest nest = 7;
 
-
-    // enum
-    Cleanliness clean = 8;
+    Nest nest = 2;
 
     // embedded enum
     enum BirdNest {
@@ -31,16 +29,32 @@ message Example {
         BIRD_NEST_DESTROYED = 1;
         BIRD_NEST_BUILT = 2;
     }
-    BirdNest bird_nest = 9;
+    BirdNest bird_nest = 3;
 
     // message with oneof
-    OperatingSystem os = 10;
+    OperatingSystem os = 4;
 
+    // embedded enum
     oneof tree {
-        string tree_type = 11;
-        bool bush = 12;
+        string tree_type = 5;
+        bool bush = 6;
     }
 }
+
+/*
+
+message A {
+    scalar 
+    enum 
+    message
+}
+
+message B {
+    repeated
+}
+*/
+
+
 
 /* 
     things to implements 
@@ -51,11 +65,10 @@ message Example {
 */
 
 message Extra {
+    // string scalar type
     string more = 1;
-}
-
-message GetExampleRequest {
-    string name = 1;
+    // number scalar type
+    int32 count = 2;
 }
 
 // enum

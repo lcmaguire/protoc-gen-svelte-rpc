@@ -11,3 +11,19 @@ if (message == null ) {
 <p class="message-info"> message.info : {message.info} </p>
 
 
+
+<p class="message-active"> message.active : {message.active}  </p>
+
+
+
+
+        {#each message.tagsCategory as item }
+            <p class="message-tagsCategory"> message.tagsCategory : {item} </p>
+
+        {/each}
+        
+
+
+<p class="message-clean"> message.clean : {message.clean} </p>
+
+

@@ -9,21 +9,22 @@
     let request = new Example();
     let response = new Example();
 
-
     async function makeRequest() {
         //response = await ExampleServiceClient.createExample(request);
+        console.log(request)
         let a = await fetch("/api/CreateExample", {
             method: "POST",
-            body: JSON.stringify(request),
+            body: request.toJsonString(),
             headers: {
-                'content-type': 'application/json'
-            }
+                "content-type": "application/json",
+                "Authorization": "AHHHHHHH"
+            },
         });
 
-        let jaySon = await a.json()
-        response = response.fromJson(jaySon)
-        console.log(jaySon)
-        console.log(response)
+        let jaySon = await a.json();
+        response = response.fromJson(jaySon);
+        //console.log(jaySon);
+        console.log(response);
         //console.log(a.json)
         //response = response.fromJson(a.json())
     }

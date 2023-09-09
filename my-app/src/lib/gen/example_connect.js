@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Example, GetExampleRequest } from "./example_pb.js";
+import { Example } from "./example_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -18,15 +18,6 @@ export const ExampleService = {
     createExample: {
       name: "CreateExample",
       I: Example,
-      O: Example,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc tutorial.ExampleService.GetExample
-     */
-    getExample: {
-      name: "GetExample",
-      I: GetExampleRequest,
       O: Example,
       kind: MethodKind.Unary,
     },

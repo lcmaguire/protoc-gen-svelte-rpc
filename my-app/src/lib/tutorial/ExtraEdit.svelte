@@ -12,3 +12,8 @@ if (message == null ) {
 <input class="message-more" bind:value={message.more} >
 <br>
 
+
+<label for="message-count"> message.count </label> <br>
+<input class="message-count" type=number bind:value={message.count} min=0 step="1" >
+<br>
+

@@ -27,18 +27,13 @@ export const Cleanliness = proto3.makeEnum(
 export const Example = proto3.makeMessageType(
   "tutorial.Example",
   () => [
-    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "active", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 4, name: "count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 5, name: "extra", kind: "message", T: Extra, repeated: true },
-    { no: 6, name: "tags_category", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 7, name: "nest", kind: "message", T: Example_Nest },
-    { no: 8, name: "clean", kind: "enum", T: proto3.getEnumType(Cleanliness) },
-    { no: 9, name: "bird_nest", kind: "enum", T: proto3.getEnumType(Example_BirdNest) },
-    { no: 10, name: "os", kind: "message", T: OperatingSystem },
-    { no: 11, name: "tree_type", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "tree" },
-    { no: 12, name: "bush", kind: "scalar", T: 8 /* ScalarType.BOOL */, oneof: "tree" },
+    { no: 1, name: "extra", kind: "message", T: Extra },
+    { no: 2, name: "nest", kind: "message", T: Example_Nest },
+    { no: 3, name: "colours", kind: "message", T: Colour, repeated: true },
+    { no: 4, name: "bird_nest", kind: "enum", T: proto3.getEnumType(Example_BirdNest) },
+    { no: 5, name: "os", kind: "message", T: OperatingSystem },
+    { no: 6, name: "tree_type", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "tree" },
+    { no: 7, name: "bush", kind: "scalar", T: 8 /* ScalarType.BOOL */, oneof: "tree" },
   ],
 );
 
@@ -57,7 +52,7 @@ export const Example_BirdNest = proto3.makeEnum(
 );
 
 /**
- * embedded message
+ * nested message view
  *
  * @generated from message tutorial.Example.Nest
  */
@@ -65,6 +60,9 @@ export const Example_Nest = proto3.makeMessageType(
   "tutorial.Example.Nest",
   () => [
     { no: 1, name: "info", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "active", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "tags_category", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: "clean", kind: "enum", T: proto3.getEnumType(Cleanliness) },
   ],
   {localName: "Example_Nest"},
 );
@@ -76,16 +74,7 @@ export const Extra = proto3.makeMessageType(
   "tutorial.Extra",
   () => [
     { no: 1, name: "more", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-  ],
-);
-
-/**
- * @generated from message tutorial.GetExampleRequest
- */
-export const GetExampleRequest = proto3.makeMessageType(
-  "tutorial.GetExampleRequest",
-  () => [
-    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
@@ -113,5 +102,15 @@ export const OperatingSystem_LinuxInfo = proto3.makeMessageType(
     { no: 2, name: "arch", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
   {localName: "OperatingSystem_LinuxInfo"},
+);
+
+/**
+ * @generated from message tutorial.Colour
+ */
+export const Colour = proto3.makeMessageType(
+  "tutorial.Colour",
+  () => [
+    { no: 1, name: "colour", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
 );
 

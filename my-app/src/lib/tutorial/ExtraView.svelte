@@ -11,3 +11,7 @@ if (message == null ) {
 <p class="message-more"> message.more : {message.more} </p>
 
 
+
+<p class="message-count"> message.count : {message.count} </p>
+
+

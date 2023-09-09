@@ -26,5 +26,10 @@ func (s *ExampleService) CreateExample(ctx context.Context, req *connect_go.Requ
 	})
 	fmt.Println(res.Msg)
 
+	for k, v := range req.Header() {
+		fmt.Println(k)
+		fmt.Println(v)
+	}
+
 	return res, nil
 }

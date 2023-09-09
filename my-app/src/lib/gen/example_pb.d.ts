@@ -39,6 +39,8 @@ export declare enum Cleanliness {
 }
 
 /**
+ * TODO change this to test out different exaxmples.
+ *
  * @generated from message tutorial.Example
  */
 export declare class Example extends Message<Example> {

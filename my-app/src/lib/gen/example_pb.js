@@ -22,6 +22,8 @@ export const Cleanliness = proto3.makeEnum(
 );
 
 /**
+ * TODO change this to test out different exaxmples.
+ *
  * @generated from message tutorial.Example
  */
 export const Example = proto3.makeMessageType(

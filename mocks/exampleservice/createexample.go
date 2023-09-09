@@ -14,16 +14,11 @@ func (s *ExampleService) CreateExample(ctx context.Context, req *connect_go.Requ
 	res := connect_go.NewResponse(&mocks.Example{
 		Extra:    req.Msg.Extra,
 		Nest:     req.Msg.Nest,
+		Colours:  req.Msg.Colours,
 		BirdNest: req.Msg.BirdNest,
 		Os:       req.Msg.Os,
 		Tree:     req.Msg.Tree,
 	})
 	fmt.Println(res.Msg)
-
-	for l, v := range req.Header() {
-		fmt.Println(l)
-		fmt.Println(v)
-	}
-
 	return res, nil
 }

@@ -5,23 +5,22 @@ service ExampleService {
     rpc CreateExample(Example) returns (Example);
 }
 
-// TODO change this to test out different exaxmples.
 message Example {
     // message view.
     Extra extra = 1;
 
-    // nested view
+    // nested message view
     message Nest {
         string info = 1;
         bool active = 2;
         // repeated scalar type
         repeated string tags_category = 3;
-
         // enum
         Cleanliness clean = 4;
     }
-
     Nest nest = 2;
+
+    repeated Colour colours = 3;
 
     // embedded enum
     enum BirdNest {
@@ -29,40 +28,18 @@ message Example {
         BIRD_NEST_DESTROYED = 1;
         BIRD_NEST_BUILT = 2;
     }
-    BirdNest bird_nest = 3;
+    BirdNest bird_nest = 4;
 
     // message with oneof
-    OperatingSystem os = 4;
+    OperatingSystem os = 5;
 
-    // embedded enum
+    // embedded oneof
     oneof tree {
-        string tree_type = 5;
-        bool bush = 6;
+        string tree_type = 6;
+        bool bush = 7;
     }
 }
 
-/*
-
-message A {
-    scalar 
-    enum 
-    message
-}
-
-message B {
-    repeated
-}
-*/
-
-
-
-/* 
-    things to implements 
-    - repeated enums
-
-    things to try
-    - more wacky oneof / nested message scenarios.
-*/
 
 message Extra {
     // string scalar type
@@ -92,3 +69,7 @@ message OperatingSystem {
         LinuxInfo linux_info = 3;
     }
 } 
+
+message Colour {
+    string colour = 1;
+}

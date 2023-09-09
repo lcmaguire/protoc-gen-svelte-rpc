@@ -3,6 +3,7 @@
 import {Example} from "$lib/gen/example_pb"
 import ExtraView from '$lib/tutorial/ExtraView.svelte'
 import NestView from '$lib/tutorial/Example.NestView.svelte'
+import ColourView from '$lib/tutorial/ColourView.svelte'
 import OperatingSystemView from '$lib/tutorial/OperatingSystemView.svelte'
 export let message;
 if (message == null ) {
@@ -17,6 +18,11 @@ if (message == null ) {
 
 <NestView message={message.nest} />
 
+
+
+{#each message.colours as item}
+         <ColourView message={item} />
+         {/each}
 
 
 <p class="message-birdNest"> message.birdNest : {message.birdNest} </p>

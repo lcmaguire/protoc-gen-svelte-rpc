@@ -39,8 +39,6 @@ export declare enum Cleanliness {
 }
 
 /**
- * TODO change this to test out different exaxmples.
- *
  * @generated from message tutorial.Example
  */
 export declare class Example extends Message<Example> {
@@ -57,31 +55,36 @@ export declare class Example extends Message<Example> {
   nest?: Example_Nest;
 
   /**
-   * @generated from field: tutorial.Example.BirdNest bird_nest = 3;
+   * @generated from field: repeated tutorial.Colour colours = 3;
+   */
+  colours: Colour[];
+
+  /**
+   * @generated from field: tutorial.Example.BirdNest bird_nest = 4;
    */
   birdNest: Example_BirdNest;
 
   /**
    * message with oneof
    *
-   * @generated from field: tutorial.OperatingSystem os = 4;
+   * @generated from field: tutorial.OperatingSystem os = 5;
    */
   os?: OperatingSystem;
 
   /**
-   * embedded enum
+   * embedded oneof
    *
    * @generated from oneof tutorial.Example.tree
    */
   tree: {
     /**
-     * @generated from field: string tree_type = 5;
+     * @generated from field: string tree_type = 6;
      */
     value: string;
     case: "treeType";
   } | {
     /**
-     * @generated from field: bool bush = 6;
+     * @generated from field: bool bush = 7;
      */
     value: boolean;
     case: "bush";
@@ -125,7 +128,7 @@ export declare enum Example_BirdNest {
 }
 
 /**
- * nested view
+ * nested message view
  *
  * @generated from message tutorial.Example.Nest
  */
@@ -273,5 +276,29 @@ export declare class OperatingSystem_LinuxInfo extends Message<OperatingSystem_L
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OperatingSystem_LinuxInfo;
 
   static equals(a: OperatingSystem_LinuxInfo | PlainMessage<OperatingSystem_LinuxInfo> | undefined, b: OperatingSystem_LinuxInfo | PlainMessage<OperatingSystem_LinuxInfo> | undefined): boolean;
+}
+
+/**
+ * @generated from message tutorial.Colour
+ */
+export declare class Colour extends Message<Colour> {
+  /**
+   * @generated from field: string colour = 1;
+   */
+  colour: string;
+
+  constructor(data?: PartialMessage<Colour>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tutorial.Colour";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Colour;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Colour;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Colour;
+
+  static equals(a: Colour | PlainMessage<Colour> | undefined, b: Colour | PlainMessage<Colour> | undefined): boolean;
 }
 

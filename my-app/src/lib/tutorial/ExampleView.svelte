@@ -5,7 +5,7 @@ import ExtraView from '$lib/tutorial/ExtraView.svelte'
 import NestView from '$lib/tutorial/Example.NestView.svelte'
 import OperatingSystemView from '$lib/tutorial/OperatingSystemView.svelte'
 export let message;
-if (message == null ) {
+if (message == null || message == undefined) {
       message = new Example ()
   }
 </script>

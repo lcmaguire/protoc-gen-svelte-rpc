@@ -89,14 +89,24 @@ function generateRpcComponent(schema: Schema, method: DescMethod) {
 
   nf.print(`import {${serviceName}Client} from '$lib/client/${serviceName}'`)
 
-  nf.print(`let request = new ${method.input.name}()`) // todo have this be type asserted.
-  nf.print(`let response = new ${method.output.name}()`) // todo have this be type asserted.
+  nf.print(`let request = new ${method.input.name}()`)
+  nf.print(`let response = new ${method.output.name}()`)
 
   // todo ${methodName} format in snakeCase.
   nf.print(`
   async function makeRequest() {
     console.log(request)
-    response = await ${serviceName}Client.${formatMethodName(methodName)}(request)
+    // response = await ${serviceName}Client.${formatMethodName(methodName)}(request)
+    let apiRes = await fetch("/api/${methodName}", {
+      method: "POST",
+      body: request.toJsonString(),
+      headers: { // todo have headers work nicer
+        "content-type": "application/json",
+        Authorization: "AHHHHHHH",
+      },
+    });
+
+    response = response.fromJson(await apiRes.json())
 }
   `)
 

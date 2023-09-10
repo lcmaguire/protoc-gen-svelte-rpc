@@ -36,11 +36,15 @@ const (
 	// ExampleServiceCreateExampleProcedure is the fully-qualified name of the ExampleService's
 	// CreateExample RPC.
 	ExampleServiceCreateExampleProcedure = "/tutorial.ExampleService/CreateExample"
+	// ExampleServiceCreateExtraProcedure is the fully-qualified name of the ExampleService's
+	// CreateExtra RPC.
+	ExampleServiceCreateExtraProcedure = "/tutorial.ExampleService/CreateExtra"
 )
 
 // ExampleServiceClient is a client for the tutorial.ExampleService service.
 type ExampleServiceClient interface {
 	CreateExample(context.Context, *connect.Request[mocks.Example]) (*connect.Response[mocks.Example], error)
+	CreateExtra(context.Context, *connect.Request[mocks.Extra]) (*connect.Response[mocks.Extra], error)
 }
 
 // NewExampleServiceClient constructs a client for the tutorial.ExampleService service. By default,
@@ -58,12 +62,18 @@ func NewExampleServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			baseURL+ExampleServiceCreateExampleProcedure,
 			opts...,
 		),
+		createExtra: connect.NewClient[mocks.Extra, mocks.Extra](
+			httpClient,
+			baseURL+ExampleServiceCreateExtraProcedure,
+			opts...,
+		),
 	}
 }
 
 // exampleServiceClient implements ExampleServiceClient.
 type exampleServiceClient struct {
 	createExample *connect.Client[mocks.Example, mocks.Example]
+	createExtra   *connect.Client[mocks.Extra, mocks.Extra]
 }
 
 // CreateExample calls tutorial.ExampleService.CreateExample.
@@ -71,9 +81,15 @@ func (c *exampleServiceClient) CreateExample(ctx context.Context, req *connect.R
 	return c.createExample.CallUnary(ctx, req)
 }
 
+// CreateExtra calls tutorial.ExampleService.CreateExtra.
+func (c *exampleServiceClient) CreateExtra(ctx context.Context, req *connect.Request[mocks.Extra]) (*connect.Response[mocks.Extra], error) {
+	return c.createExtra.CallUnary(ctx, req)
+}
+
 // ExampleServiceHandler is an implementation of the tutorial.ExampleService service.
 type ExampleServiceHandler interface {
 	CreateExample(context.Context, *connect.Request[mocks.Example]) (*connect.Response[mocks.Example], error)
+	CreateExtra(context.Context, *connect.Request[mocks.Extra]) (*connect.Response[mocks.Extra], error)
 }
 
 // NewExampleServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -87,10 +103,17 @@ func NewExampleServiceHandler(svc ExampleServiceHandler, opts ...connect.Handler
 		svc.CreateExample,
 		opts...,
 	)
+	exampleServiceCreateExtraHandler := connect.NewUnaryHandler(
+		ExampleServiceCreateExtraProcedure,
+		svc.CreateExtra,
+		opts...,
+	)
 	return "/tutorial.ExampleService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ExampleServiceCreateExampleProcedure:
 			exampleServiceCreateExampleHandler.ServeHTTP(w, r)
+		case ExampleServiceCreateExtraProcedure:
+			exampleServiceCreateExtraHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -102,4 +125,8 @@ type UnimplementedExampleServiceHandler struct{}
 
 func (UnimplementedExampleServiceHandler) CreateExample(context.Context, *connect.Request[mocks.Example]) (*connect.Response[mocks.Example], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tutorial.ExampleService.CreateExample is not implemented"))
+}
+
+func (UnimplementedExampleServiceHandler) CreateExtra(context.Context, *connect.Request[mocks.Extra]) (*connect.Response[mocks.Extra], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("tutorial.ExampleService.CreateExtra is not implemented"))
 }

@@ -20,7 +20,6 @@ let response = new Example()
     });
 
     response = new Example().fromJson(await apiRes.json())
-    //response = response.fromJson(await apiRes.json())
 }
   
 </script>

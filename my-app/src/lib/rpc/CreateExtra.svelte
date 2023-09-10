@@ -19,7 +19,7 @@ let response = new Extra()
       },
     });
 
-    response = response.fromJson(await apiRes.json())
+    response = new Extra().fromJson(await apiRes.json())
 }
   
 </script>

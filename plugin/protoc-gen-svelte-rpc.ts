@@ -106,7 +106,7 @@ function generateRpcComponent(schema: Schema, method: DescMethod) {
       },
     });
 
-    response = response.fromJson(await apiRes.json())
+    response = new ${method.output.name}().fromJson(await apiRes.json())
 }
   `)
 

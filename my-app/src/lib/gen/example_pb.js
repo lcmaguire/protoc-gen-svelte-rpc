@@ -111,6 +111,7 @@ export const Colour = proto3.makeMessageType(
   "tutorial.Colour",
   () => [
     { no: 1, name: "colour", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "liked", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 

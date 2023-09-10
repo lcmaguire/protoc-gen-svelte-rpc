@@ -3,6 +3,7 @@ package tutorial;
 
 service ExampleService {
     rpc CreateExample(Example) returns (Example);
+    rpc CreateExtra(Extra) returns (Extra);
 }
 
 message Example {
@@ -39,7 +40,6 @@ message Example {
         bool bush = 7;
     }
 }
-
 
 message Extra {
     // string scalar type

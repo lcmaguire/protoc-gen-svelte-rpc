@@ -287,6 +287,11 @@ export declare class Colour extends Message<Colour> {
    */
   colour: string;
 
+  /**
+   * @generated from field: bool liked = 2;
+   */
+  liked: boolean;
+
   constructor(data?: PartialMessage<Colour>);
 
   static readonly runtime: typeof proto3;

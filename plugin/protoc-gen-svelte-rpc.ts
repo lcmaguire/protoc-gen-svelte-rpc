@@ -135,14 +135,14 @@ export const ${serviceName}Client = createPromiseClient(${serviceName}, transpor
 }
 
 function apiRoutes(schema: Schema, method: DescMethod) {
-  let nf = schema.generateFile(`routes/api/${method.name}`) // todo consider using full path.
+  let nf = schema.generateFile(`routes/api/${method.name}/+server.js`) // todo consider using full path.
 
   let serviceName = method.parent.name
   let requestName = protoCamelCase(method.input.name) // todo consider using nf.Import()
   let methodName = formatMethodName(method.name)
   let tplate = `
   import { ${serviceName}Client } from '$lib/client/${serviceName}';
-import { ${requestName} } from '$lib/gen/${requestName.toLocaleLowerCase()}_pb';
+import { ${requestName} } from '$lib/gen/${method.parent.file.name}_pb';
 import { json } from '@sveltejs/kit';
 
 /** @type {import('./$types').RequestHandler} */

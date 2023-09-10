@@ -9,7 +9,17 @@ let response = new Extra()
 
   async function makeRequest() {
     console.log(request)
-    response = await ExampleServiceClient.createExtra(request)
+    // response = await ExampleServiceClient.createExtra(request)
+    let apiRes = await fetch("/api/CreateExtra", {
+      method: "POST",
+      body: request.toJsonString(),
+      headers: { // todo have headers work nicer
+        "content-type": "application/json",
+        Authorization: "AHHHHHHH",
+      },
+    });
+
+    response = response.fromJson(await apiRes.json())
 }
   
 </script>

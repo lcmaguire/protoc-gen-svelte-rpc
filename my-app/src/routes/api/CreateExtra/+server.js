@@ -1,4 +1,3 @@
-// @ts-nocheck
 
   import { ExampleServiceClient } from '$lib/client/ExampleService';
 import { Extra } from '$lib/gen/example_pb';

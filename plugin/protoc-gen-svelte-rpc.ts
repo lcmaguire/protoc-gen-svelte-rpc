@@ -96,17 +96,16 @@ function generateRpcComponent(schema: Schema, method: DescMethod) {
   nf.print(`
   async function makeRequest() {
     console.log(request)
-    // response = await ${serviceName}Client.${formatMethodName(methodName)}(request)
     let apiRes = await fetch("/api/${methodName}", {
       method: "POST",
       body: request.toJsonString(),
-      headers: { // todo have headers work nicer
+      headers: {
         "content-type": "application/json",
-        Authorization: "AHHHHHHH",
       },
     });
 
     response = new ${method.output.name}().fromJson(await apiRes.json())
+    console.log(response)
 }
   `)
 

@@ -12,3 +12,8 @@ if (message == null ) {
 <input class="message-colour" bind:value={message.colour} >
 <br>
 
+
+<label for="message-liked"> message.liked </label> <br>
+<input class="message-liked" type=checkbox  bind:checked={message.liked} >
+<br>
+

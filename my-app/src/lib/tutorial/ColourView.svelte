@@ -11,3 +11,7 @@ if (message == null ) {
 <p class="message-colour"> message.colour : {message.colour} </p>
 
 
+
+<p class="message-liked"> message.liked : {message.liked}  </p>
+
+

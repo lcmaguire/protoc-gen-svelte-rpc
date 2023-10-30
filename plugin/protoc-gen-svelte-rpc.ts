@@ -126,7 +126,7 @@ function generateRpcComponent(schema: Schema, method: DescMethod) {
 function client(schema: Schema, serviceName: string, fileName: string) {
   let client = `  
   ${genMessageJScomment}
-  import { createConnectTransport } from "@bufbuild/connect-web";
+  import { createConnectTransport } from "@connectrpc/connect-web";
   import { createPromiseClient } from "@connectrpc/connect";
 
 

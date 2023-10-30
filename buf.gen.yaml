@@ -1,7 +1,7 @@
 # This template is to generate connect-web, proto-es and protoc-gen-svelte code for my demo.
 version: v1
 plugins:
-  - plugin: buf.build/bufbuild/es 
+  - plugin: buf.build/bufbuild/es
     out: my-app/src/lib/gen
   - plugin: buf.build/connectrpc/es
     out:  my-app/src/lib/gen

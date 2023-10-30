@@ -21,6 +21,7 @@
 	"type": "module",
 	"dependencies": {
 		"@bufbuild/connect-web": "^0.13.0",
-		"@connectrpc/connect": "^0.13.2"
+		"@bufbuild/protobuf": "^1.4.1",
+		"@connectrpc/connect": "^1.1.3"
 	}
 }

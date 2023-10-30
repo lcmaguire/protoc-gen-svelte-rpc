@@ -9,7 +9,6 @@ let response = new Example()
 
   async function makeRequest() {
     console.log(request)
-    // response = await ExampleServiceClient.createExample(request)
     let apiRes = await fetch("/api/CreateExample", {
       method: "POST",
       body: request.toJsonString(),
